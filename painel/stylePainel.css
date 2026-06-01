@@ -1,0 +1,503 @@
+/* =====================================================
+   ESTILOS EXCLUSIVOS DA TELA DE PAINEL (DASHBOARD)
+   ===================================================== */
+
+/* Imagem de Fundo (Gym Backdrop) */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: var(--sidebar-w);
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+  background-image: url('../Assets/bgacademia.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  filter: blur(3px);
+  pointer-events: none;
+}
+
+/* Legibilidade do Cabeçalho da Página */
+.page-header h1 {
+  color: #ffffff;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+
+.page-header p {
+  color: rgba(255, 255, 255, 0.85);
+  text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+}
+
+/* =====================================================
+   CLOCK WIDGET (Relógio Glassmorphic)
+   ===================================================== */
+.clock-widget {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: var(--r-md);
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  color: #ffffff;
+  font-weight: 600;
+  box-shadow: var(--shadow-sm);
+  text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+}
+
+.clock-widget i {
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+#clock-time {
+  font-family: monospace;
+  font-size: 16px;
+  letter-spacing: 0.05em;
+}
+
+/* =====================================================
+   WORKSPACE DO PAINEL & SIDEBAR DE AÇÕES (NOVO)
+   ===================================================== */
+.painel-workspace {
+  display: flex;
+  gap: var(--sp-6);
+  margin-top: var(--sp-6);
+  align-items: stretch;
+}
+
+/* Lado Esquerdo: Barra Vertical de Ações */
+.painel-sidebar-actions {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--sp-4);
+  width: 100%;
+}
+
+/* Item de Ação (botão circular + texto) */
+.action-trigger-item {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-3) var(--sp-4);
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: var(--r-lg);
+  color: #ffffff;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  user-select: none;
+}
+
+.action-trigger-item:hover {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+.action-trigger-item:active {
+  transform: translateY(0);
+}
+
+/* Botão Circular */
+.circular-icon-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+  color: #ffffff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  transition: transform 0.25s ease;
+}
+
+.action-trigger-item:hover .circular-icon-btn {
+  transform: scale(1.1);
+}
+
+/* Cores específicas para cada botão de ação */
+.btn-catraca {
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+}
+.btn-atividades {
+  background: linear-gradient(135deg, #10b981, #047857);
+}
+.btn-vencimentos {
+  background: linear-gradient(135deg, #f59e0b, #b45309);
+}
+.btn-aniversariantes {
+  background: linear-gradient(135deg, #ec4899, #be185d);
+}
+
+/* Textos da Ação */
+.action-trigger-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.action-trigger-info h4 {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0;
+  color: #ffffff;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+}
+
+.action-trigger-info span {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.7);
+  display: block;
+  margin-top: 2px;
+}
+
+/* Lado Direito: Spacious Free Zone */
+.painel-free-zone {
+  flex-grow: 1;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 2px dashed rgba(255, 255, 255, 0.2);
+  border-radius: var(--r-xl);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--sp-8);
+  min-height: 380px;
+  transition: all 0.3s ease;
+}
+
+.painel-free-zone:hover {
+  background: rgba(255, 255, 255, 0.11);
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
+.free-zone-placeholder {
+  max-width: 420px;
+  text-align: center;
+  color: #ffffff;
+}
+
+.free-zone-placeholder i {
+  font-size: 40px;
+  color: rgba(255, 255, 255, 0.6);
+  margin-bottom: var(--sp-4);
+  animation: pulse-slow 3s infinite ease-in-out;
+  display: inline-block;
+}
+
+.free-zone-placeholder h3 {
+  font-size: 18px;
+  font-weight: 700;
+  margin-top: 0;
+  margin-bottom: var(--sp-2);
+  text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+
+.free-zone-placeholder p {
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.75);
+  text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+}
+
+@keyframes pulse-slow {
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50% { opacity: 0.85; transform: scale(1.05); }
+}
+
+
+.catraca-log-container {
+  height: 200px;
+  overflow-y: auto;
+  padding: var(--sp-4) var(--sp-5);
+}
+
+/* Estilo dos logs de catraca */
+.catraca-log-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+  transition: background-color 0.15s;
+}
+
+.catraca-log-item:last-child {
+  border-bottom: none;
+}
+
+.catraca-log-aluno {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+}
+
+.catraca-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  color: var(--text-2);
+  font-size: 12px;
+}
+
+.catraca-info-nome {
+  font-weight: 600;
+  color: var(--text);
+}
+
+.catraca-info-hora {
+  font-size: 11px;
+  color: var(--text-3);
+  margin-top: 1px;
+}
+
+.catraca-status {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+}
+
+/* Scrollbar Customizado */
+.catraca-log-container::-webkit-scrollbar {
+  width: 6px;
+}
+.catraca-log-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+.catraca-log-container::-webkit-scrollbar-thumb {
+  background: var(--border-d);
+  border-radius: var(--r-pill);
+}
+
+/* =====================================================
+   LOTAÇÃO (Progresso Circular e Stats)
+   ===================================================== */
+.ocupacao-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  height: 200px;
+  padding: 0 var(--sp-3);
+}
+
+.progress-ring-container {
+  position: relative;
+  width: 130px;
+  height: 130px;
+}
+
+.progress-ring {
+  transform: rotate(-90deg);
+}
+
+.progress-ring__circle {
+  transition: stroke-dashoffset 0.35s;
+  transform-origin: 50% 50%;
+}
+
+.progress-ring-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  line-height: 1;
+}
+
+#current-occupancy-num {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.progress-ring-text small {
+  font-size: 11px;
+  color: var(--text-3);
+  margin-top: 2px;
+  text-transform: uppercase;
+}
+
+.ocupacao-stats {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.stat-row {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-size: 13px;
+  color: var(--text-2);
+}
+
+.stat-row i {
+  color: var(--text-3);
+  font-size: 14px;
+  width: 18px;
+  text-align: center;
+}
+
+/* =====================================================
+   GRADE SECUNDÁRIA (Obsoleta, mas mantida para retrocompatibilidade)
+   ===================================================== */
+
+.secao-titulo {
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-2);
+  margin-bottom: var(--sp-3);
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+
+.secao-titulo i {
+  color: var(--text-3);
+}
+
+
+
+/* =====================================================
+   TABELAS DE RESUMO (Vencimentos e Aniversários)
+   ===================================================== */
+.tabela-painel-resumo {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tabela-painel-resumo th {
+  padding: 8px var(--sp-4);
+  background: var(--surface-2);
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--text-3);
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+
+.tabela-painel-resumo td {
+  padding: 10px var(--sp-4);
+  font-size: 13px;
+  color: var(--text);
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+
+.tabela-painel-resumo tr:last-child td {
+  border-bottom: none;
+}
+
+/* =====================================================
+   TIMELINE DE ATIVIDADES ADMINISTRATIVAS
+   ===================================================== */
+.timeline-item {
+  display: flex;
+  gap: var(--sp-4);
+  margin-bottom: var(--sp-5);
+  position: relative;
+}
+
+.timeline-item:last-child {
+  margin-bottom: 0;
+}
+
+/* Linha vertical que conecta os pontos */
+.timeline-item::after {
+  content: "";
+  position: absolute;
+  top: 18px;
+  left: 5px;
+  bottom: -22px;
+  width: 2px;
+  background: var(--border);
+  z-index: 1;
+}
+
+.timeline-item:last-child::after {
+  display: none;
+}
+
+.timeline-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--border-d);
+  flex-shrink: 0;
+  margin-top: 4px;
+  z-index: 2;
+}
+
+.timeline-dot.dot-sucesso { background-color: var(--ativo); }
+.timeline-dot.dot-alerta { background-color: var(--aguardando); }
+.timeline-dot.dot-perigo { background-color: var(--primary); }
+.timeline-dot.dot-pausado { background-color: var(--pausado); }
+
+.timeline-content {
+  flex: 1;
+}
+
+.timeline-titulo {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.timeline-desc {
+  font-size: 12px;
+  color: var(--text-2);
+  margin-top: 1px;
+}
+
+.timeline-data {
+  font-size: 10.5px;
+  color: var(--text-3);
+  margin-top: 3px;
+}
+
+/* =====================================================
+   RESPONSIVIDADE
+   ===================================================== */
+@media (max-width: 992px) {
+  .painel-workspace {
+    flex-direction: column;
+  }
+  
+  .painel-sidebar-actions {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 576px) {
+  .painel-sidebar-actions {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .clock-widget {
+    margin-top: var(--sp-3);
+  }
+}

@@ -1,0 +1,122 @@
+/* =====================================================
+   USER PROFILE SCREEN — SPECIFIC STYLES
+   ===================================================== */
+
+/* Perfil Layout */
+.perfil-layout {
+  display: flex;
+  gap: var(--sp-6);
+  margin-top: var(--sp-6);
+  align-items: flex-start;
+}
+
+/* Cartão de Informação do Perfil */
+.perfil-card-info {
+  width: 280px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: var(--sp-6);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-md);
+  backdrop-filter: blur(10px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--sp-3);
+  flex-shrink: 0;
+}
+
+.large-avatar-placeholder {
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;
+  font-weight: 700;
+  border: 3px solid rgba(255, 255, 255, 0.8);
+  box-shadow: var(--shadow-md);
+  user-select: none;
+  margin-bottom: 4px;
+}
+
+.perfil-card-info h2 {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0;
+}
+
+.user-email-text {
+  font-size: 12px;
+  color: var(--text-3);
+  margin: 0;
+  word-break: break-all;
+}
+
+/* Crachás de Cargos/Níveis */
+.user-level-badge {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: var(--r-pill);
+  display: inline-block;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.user-level-badge.badge-administrador {
+  background: rgba(232, 84, 94, 0.12);
+  color: var(--primary);
+}
+
+.user-level-badge.badge-gerente {
+  background: var(--ativo-bg);
+  color: var(--ativo-text);
+}
+
+.user-level-badge.badge-secretaria {
+  background: rgba(37, 99, 235, 0.12);
+  color: #2563eb;
+}
+
+/* Container de Formulários */
+.perfil-forms-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+
+.perfil-section-form {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: var(--sp-6);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-md);
+  backdrop-filter: blur(10px);
+}
+
+.perfil-section-form h3 {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 8px;
+  margin-bottom: var(--sp-3);
+}
+
+/* Responsividade */
+@media (max-width: 820px) {
+  .perfil-layout {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .perfil-card-info {
+    width: 100%;
+  }
+}

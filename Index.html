@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Acesse a área administrativa do sistema de gestão da academia Bem-Estar Fitness.">
+  <title>Login — Bem-Estar Fitness</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/designSystem.css">
+  <link rel="stylesheet" href="css/styleLogin.css">
+</head>
+
+<body class="klif-theme">
+
+  <!-- =====================================================
+     LOGIN CARD CONTAINER
+     ===================================================== -->
+  <main class="login-container" id="login-card-main">
+
+    <!-- Header: Logo e Título da Academia (Dinâmicos) -->
+    <header class="login-header">
+      <img id="login-logo-img" src="Assets/logoKlif.png" alt="Logo Klif-Academy" class="login-logo">
+      <h1 id="login-title" class="login-title-wrapper">
+        <strong>Klif</strong><span>Academy</span>
+      </h1>
+      <p id="login-subtitle-text" class="login-subtitle">Carregando portal de acesso...</p>
+    </header>
+
+    <!-- Slider Wrapper para transições horizontais de formulários -->
+    <div class="login-slider-wrapper">
+      <div class="login-slider">
+
+        <!-- ==========================================
+           PANE 0: SELEÇÃO DE ACADEMIA (Branding Geral)
+           ========================================== -->
+        <section class="login-form-pane" id="pane-select-tenant" aria-label="Seleção de Academia">
+          <form id="form-select-tenant" novalidate>
+            <div class="input-group" style="margin-bottom: var(--sp-6);">
+              <label for="select-tenant-slug">Código de Acesso da Academia</label>
+              <div class="input-field-wrapper">
+                <input type="text" id="select-tenant-slug" class="input-field" placeholder="Ex: bemestar" required style="padding-left: 14px;">
+              </div>
+              <small style="font-size: 11.5px; color: var(--text-3); margin-top: var(--sp-2); display: block; line-height: 1.4;">Digite o código identificador da sua academia para carregar sua tela de login personalizada.</small>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn-submit" id="btn-select-submit">
+              <i class="fa-solid fa-circle-arrow-right"></i>
+              Acessar Academia
+            </button>
+          </form>
+        </section>
+
+        <!-- ==========================================
+           PANE 1: FORMULÁRIO DE LOGIN
+           ========================================== -->
+        <section class="login-form-pane" id="pane-login" aria-label="Painel de Login">
+          <form id="form-login" novalidate>
+            <!-- Username Input -->
+            <div class="input-group">
+              <label for="login-username">E-mail ou Usuário</label>
+              <div class="input-field-wrapper">
+                <input type="text" id="login-username" class="input-field" placeholder="exemplo@email.com" required>
+                <i class="fa-solid fa-envelope input-icon"></i>
+              </div>
+            </div>
+
+            <!-- Password Input -->
+            <div class="input-group">
+              <label for="login-password">Senha</label>
+              <div class="input-field-wrapper">
+                <input type="password" id="login-password" class="input-field password-input" placeholder="Digite sua senha" required>
+                <i class="fa-solid fa-lock input-icon"></i>
+                <button type="button" class="btn-toggle-password" aria-label="Mostrar senha">
+                  <i class="fa-regular fa-eye"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- Lembrar-me e Esqueci Senha -->
+            <div class="form-options">
+              <label class="remember-me">
+                <input type="checkbox" id="login-remember">
+                <span>Lembrar de mim</span>
+              </label>
+              <a href="#" class="forgot-link" onclick="showForm(3); return false;">Esqueceu a senha?</a>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn-submit" id="btn-login-submit">
+              <i class="fa-solid fa-right-to-bracket"></i>
+              Entrar
+            </button>
+          </form>
+
+          <!-- Footer alternar para Cadastro -->
+          <footer class="form-footer">
+            <p>Ainda não tem uma conta? <a href="#" onclick="showForm(2); return false;">Cadastre-se</a></p>
+            <p style="margin-top: var(--sp-4); font-size: 12px;"><a href="#" id="link-change-tenant" style="color: var(--text-3); font-weight: 500;"><i class="fa-solid fa-arrow-rotate-left"></i> Acessar com outra academia</a></p>
+          </footer>
+        </section>
+
+        <!-- ==========================================
+           PANE 2: FORMULÁRIO DE CADASTRO
+           ========================================== -->
+        <section class="login-form-pane" id="pane-register" aria-label="Painel de Cadastro">
+          <form id="form-register" novalidate>
+            <!-- Nome Completo -->
+            <div class="input-group">
+              <label for="reg-name">Nome Completo</label>
+              <div class="input-field-wrapper">
+                <input type="text" id="reg-name" class="input-field" placeholder="Seu nome completo" required>
+                <i class="fa-solid fa-user-tag input-icon"></i>
+              </div>
+            </div>
+
+            <!-- Nome de Usuário (Login) -->
+            <div class="input-group">
+              <label for="reg-username">Nome de Usuário (Login)</label>
+              <div class="input-field-wrapper">
+                <input type="text" id="reg-username" class="input-field" placeholder="Ex: alana.santos" required>
+                <i class="fa-solid fa-user-gear input-icon"></i>
+              </div>
+            </div>
+
+            <!-- E-mail -->
+            <div class="input-group">
+              <label for="reg-email">E-mail Corporativo</label>
+              <div class="input-field-wrapper">
+                <input type="email" id="reg-email" class="input-field" placeholder="exemplo@email.com" required>
+                <i class="fa-solid fa-envelope input-icon"></i>
+              </div>
+            </div>
+
+            <!-- Senha -->
+            <div class="input-group">
+              <label for="reg-password">Senha de Acesso</label>
+              <div class="input-field-wrapper">
+                <input type="password" id="reg-password" class="input-field password-input" placeholder="Mínimo 6 caracteres" required>
+                <i class="fa-solid fa-lock input-icon"></i>
+                <button type="button" class="btn-toggle-password" aria-label="Mostrar senha">
+                  <i class="fa-regular fa-eye"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- Confirmar Senha -->
+            <div class="input-group">
+              <label for="reg-confirm-password">Confirmar Senha</label>
+              <div class="input-field-wrapper">
+                <input type="password" id="reg-confirm-password" class="input-field password-input" placeholder="Repita a senha" required>
+                <i class="fa-solid fa-lock input-icon"></i>
+                <button type="button" class="btn-toggle-password" aria-label="Mostrar senha">
+                  <i class="fa-regular fa-eye"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- Termos e Condições -->
+            <label class="terms-checkbox">
+              <input type="checkbox" id="reg-terms" required>
+              <span>Aceito os <a href="#">Termos de Uso</a> e a <a href="#">Política de Privacidade</a> do portal.</span>
+            </label>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn-submit" id="btn-register-submit">
+              <i class="fa-solid fa-user-plus"></i>
+              Criar Conta
+            </button>
+          </form>
+
+          <!-- Footer alternar para Login -->
+          <footer class="form-footer">
+            <p>Já possui uma conta? <a href="#" onclick="showForm(1); return false;">Faça login</a></p>
+          </footer>
+        </section>
+
+        <!-- ==========================================
+           PANE 3: FORMULÁRIO DE RECUPERAÇÃO DE SENHA
+           ========================================== -->
+        <section class="login-form-pane" id="pane-forgot" aria-label="Painel de Recuperação de Senha">
+          <form id="form-forgot" novalidate>
+            <!-- Email Input -->
+            <div class="input-group" style="margin-bottom: var(--sp-6);">
+              <label for="forgot-email">E-mail Cadastrado</label>
+              <div class="input-field-wrapper">
+                <input type="email" id="forgot-email" class="input-field" placeholder="exemplo@email.com" required>
+                <i class="fa-solid fa-envelope input-icon"></i>
+              </div>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn-submit" id="btn-forgot-submit">
+              <i class="fa-solid fa-paper-plane"></i>
+              Recuperar Acesso
+            </button>
+          </form>
+
+          <!-- Footer alternar para Login -->
+          <footer class="form-footer">
+            <p>Lembrou da senha? <a href="#" onclick="showForm(1); return false;">Voltar para o login</a></p>
+          </footer>
+        </section>
+
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Script da página -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bcryptjs@2.4.3/dist/bcrypt.min.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/jsLogin.js"></script>
+
+</body>
+
+</html>

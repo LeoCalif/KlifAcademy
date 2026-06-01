@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Configurações — Bem-Estar Fitness</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="../css/designSystem.css">
+  <link rel="stylesheet" href="../alunos/styleAluno.css">
+  <link rel="stylesheet" href="styleConfig.css">
+</head>
+
+<body>
+
+  <!-- =====================================================
+     SIDEBAR
+     ===================================================== -->
+  <aside class="sidebar">
+
+    <div>
+      <div class="sidebar-header">
+        <div class="sidebar-logo-icon">
+          <img src="../Assets/logoAcademia.png" alt="Logo Academia" class="logoAcademia">
+        </div>
+        <div class="sidebar-logo-text">
+          <strong>Bem-Estar</strong>
+          <span>Fitness</span>
+        </div>
+      </div>
+
+      <!-- Nav: links principais -->
+      <nav class="sidebar-nav">
+        <p class="nav-label">Menu</p>
+        <a href="../painel/Painel.html">
+          <i class="fa-solid fa-chart-line"></i>
+          Painel
+        </a>
+        <a href="../alunos/Alunos.html">
+          <i class="fa-solid fa-users"></i>
+          Alunos
+          <span class="nav-badge">0</span>
+        </a>
+        <a href="../pagamentos/Pagamentos.html">
+          <i class="fa-solid fa-dollar-sign"></i>
+          Pagamentos
+        </a>
+        <a href="../planos/Planos.html">
+          <i class="fa-solid fa-clipboard-list"></i>
+          Planos
+        </a>
+        <a href="#" class="active">
+          <i class="fa-solid fa-gear"></i>
+          Configurações
+        </a>
+      </nav>
+    </div>
+
+    <!-- Footer: status + botão sair -->
+    <div class="sidebar-footer">
+      <p class="sidebar-footer-title">Dados</p>
+
+      <div class="sidebar-status">
+        <div class="status-dot-indicator"></div>
+        <span>Status: <strong>Atualizado</strong></span>
+      </div>
+
+      <!-- Botão Sair removido daqui e colocado no menu de perfil -->
+    </div>
+
+  </aside>
+
+  <!-- =====================================================
+     CONTEÚDO PRINCIPAL
+     ===================================================== -->
+  <main class="main-content">
+
+    <!-- Cabeçalho da página -->
+    <header class="page-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--sp-4);">
+      <div>
+        <h1>Configurações</h1>
+        <p>Gerencie o sistema e customize as preferências da sua academia</p>
+      </div>
+      <!-- Widget de Relógio Glassmorphic + Perfil -->
+      <div class="header-right-widgets" style="display: flex; align-items: center; gap: var(--sp-3);">
+        <div class="clock-widget">
+          <i class="fa-regular fa-clock"></i>
+          <span id="clock-time">00:00:00</span>
+        </div>
+        <!-- Perfil do Usuário com Dropdown -->
+        <div class="user-profile-menu" style="position: relative; cursor: pointer;">
+          <div class="user-avatar-placeholder" style="width: 40px; height: 40px; border-radius: 50%; background: var(--primary); color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 16px; border: 2px solid rgba(255, 255, 255, 0.8); box-shadow: var(--shadow-sm); user-select: none;">C</div>
+          <div class="profile-dropdown" style="display: none; position: absolute; right: 0; top: 48px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-md); box-shadow: var(--shadow-md); width: 140px; z-index: 1000; overflow: hidden; backdrop-filter: blur(10px); padding: 4px 0;">
+            <a href="../perfil/Perfil.html" style="display: flex; align-items: center; gap: 8px; padding: 10px 16px; color: var(--text-2); font-size: 13px; text-decoration: none; font-weight: 500; transition: all 0.15s ease;">
+              <i class="fa-solid fa-user-gear"></i> Ver Perfil
+            </a>
+            <hr style="border: none; border-top: 1px solid var(--border); margin: 4px 0;">
+            <a href="#" class="btn-logout" style="display: flex; align-items: center; gap: 8px; padding: 10px 16px; color: var(--primary); font-size: 13px; text-decoration: none; font-weight: 600; transition: all 0.15s ease;">
+              <i class="fa-solid fa-right-from-bracket"></i> Sair
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Layout Dividido em Abas -->
+    <section class="config-layout">
+      
+      <!-- Navegação Lateral das Abas -->
+      <div class="config-tabs-nav">
+        <button class="tab-nav-btn active" data-target="tab-geral">
+          <i class="fa-solid fa-sliders"></i> Geral
+        </button>
+        <button class="tab-nav-btn" data-target="tab-notificacoes">
+          <i class="fa-solid fa-message"></i> Notificações
+        </button>
+        <button class="tab-nav-btn" data-target="tab-pix">
+          <i class="fa-solid fa-qrcode"></i> Pagamento (Pix)
+        </button>
+        <button class="tab-nav-btn" data-target="tab-backup">
+          <i class="fa-solid fa-database"></i> Backup
+        </button>
+        <button class="tab-nav-btn" data-target="tab-seguranca">
+          <i class="fa-solid fa-shield-halved"></i> Segurança e Auditoria
+        </button>
+      </div>
+
+      <!-- Conteúdo das Abas -->
+      <div class="config-tabs-content">
+
+        <!-- ABA 1: GERAL -->
+        <div class="tab-pane active" id="tab-geral">
+          <h2>Configurações Gerais</h2>
+          <p class="tab-subtitle">Identidade visual e contatos da academia.</p>
+          
+          <form id="form-config-geral" class="form-config">
+            <div class="campos-grid">
+              
+              <div class="campo-grupo campo-largo">
+                <label for="cfg-nome">Nome da Academia</label>
+                <input type="text" id="cfg-nome" placeholder="Ex: Academia Bem-Estar Fitness" required>
+              </div>
+
+              <div class="campo-grupo">
+                <label for="cfg-whatsapp">WhatsApp Comercial</label>
+                <input type="text" id="cfg-whatsapp" placeholder="Ex: (11) 98765-4321" required>
+              </div>
+
+              <div class="campo-grupo">
+                <label for="cfg-logo">Caminho da Logo (PNG)</label>
+                <input type="text" id="cfg-logo" placeholder="Ex: ../Assets/logoAcademia.png" required>
+              </div>
+
+              <div class="campo-grupo campo-largo">
+                <label for="cfg-endereco">Endereço da Academia</label>
+                <input type="text" id="cfg-endereco" placeholder="Ex: Av. Paulista, 1000 - São Paulo, SP" required>
+              </div>
+
+            </div>
+            
+            <div class="form-actions">
+              <button type="submit" class="btn-novo-aluno">
+                <i class="fa-solid fa-floppy-disk"></i> Salvar Alterações
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- ABA 2: NOTIFICAÇÕES -->
+        <div class="tab-pane" id="tab-notificacoes">
+          <h2>Notificações e Mensagens</h2>
+          <p class="tab-subtitle">Configure lembretes de cobrança automáticos pelo WhatsApp.</p>
+          
+          <form id="form-config-notif" class="form-config">
+            <div class="campos-grid">
+              
+              <div class="campo-grupo">
+                <label for="cfg-dias-aviso">Enviar aviso de vencimento anterior a</label>
+                <div class="input-suffix-wrapper" style="display: flex; align-items: center; gap: 8px;">
+                  <input type="number" id="cfg-dias-aviso" min="1" max="15" required style="width: 80px;">
+                  <span style="font-weight: 500; color: var(--text-2);">dias</span>
+                </div>
+              </div>
+
+              <div class="campo-grupo campo-largo">
+                <label for="cfg-msg-template">Template da Mensagem (WhatsApp)</label>
+                <textarea id="cfg-msg-template" rows="5" required placeholder="Escreva a mensagem..."></textarea>
+                <small class="help-text">Use tags dinâmicas: <strong>{nome}</strong> (nome do aluno), <strong>{plano}</strong> (plano contratado), <strong>{dias}</strong> (dias restantes) e <strong>{vencimento}</strong> (data).</small>
+              </div>
+
+              <!-- Pré-visualização da mensagem -->
+              <div class="campo-grupo campo-largo">
+                <label>Pré-visualização do envio</label>
+                <div class="msg-preview-box">
+                  <div class="preview-header">
+                    <i class="fa-brands fa-whatsapp"></i>
+                    <span>Conversa com Aluno</span>
+                  </div>
+                  <div class="preview-body" id="preview-mensagem-corpo">
+                    <!-- Gerado dinamicamente -->
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="form-actions" style="margin-top: 20px">
+              <button type="submit" class="btn-novo-aluno">
+                <i class="fa-solid fa-floppy-disk"></i> Salvar Preferências
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- ABA 3: PAGAMENTO (PIX) -->
+        <div class="tab-pane" id="tab-pix">
+          <h2>Configuração de Pagamento (Pix)</h2>
+          <p class="tab-subtitle">Configure sua chave Pix e gere QR Codes para os pagamentos.</p>
+          
+          <div class="pix-layout-divided">
+            <!-- Form de configuração -->
+            <form id="form-config-pix" class="form-config" style="flex: 1;">
+              <div class="campos-grid">
+                
+                <div class="campo-grupo">
+                  <label for="cfg-pix-tipo">Tipo de Chave</label>
+                  <select id="cfg-pix-tipo" required>
+                    <option value="cnpj">CNPJ</option>
+                    <option value="cpf">CPF</option>
+                    <option value="email">E-mail</option>
+                    <option value="celular">Celular</option>
+                    <option value="aleatoria">Chave Aleatória</option>
+                  </select>
+                </div>
+
+                <div class="campo-grupo">
+                  <label for="cfg-pix-chave">Chave Pix</label>
+                  <input type="text" id="cfg-pix-chave" placeholder="Chave Pix" required>
+                </div>
+
+                <div class="campo-grupo campo-largo">
+                  <label for="cfg-pix-beneficiario">Nome do Beneficiário</label>
+                  <input type="text" id="cfg-pix-beneficiario" placeholder="Ex: Academia Bem-Estar Fitness Ltda" required>
+                </div>
+
+                <div class="campo-grupo">
+                  <label for="cfg-pix-cidade">Cidade do Beneficiário</label>
+                  <input type="text" id="cfg-pix-cidade" placeholder="Ex: Sao Paulo (sem acento)" required>
+                </div>
+
+                <div class="campo-grupo">
+                  <label for="cfg-pix-teste-valor">Valor de Teste (R$ - opcional)</label>
+                  <input type="number" id="cfg-pix-teste-valor" min="0" step="0.01" placeholder="Ex: 90.00">
+                </div>
+
+              </div>
+
+              <div class="form-actions" style="margin-top: 20px">
+                <button type="submit" class="btn-novo-aluno">
+                  <i class="fa-solid fa-floppy-disk"></i> Salvar e Atualizar QR Code
+                </button>
+              </div>
+            </form>
+
+            <!-- Painel Visualizador QR Code -->
+            <div class="pix-preview-panel">
+              <h3>Simulador BR Code Pix</h3>
+              
+              <div class="qr-code-display-box">
+                <img id="pix-qr-img" src="" alt="Pix QR Code">
+                <div class="qr-placeholder" id="pix-qr-placeholder">
+                  <i class="fa-solid fa-qrcode"></i>
+                  <span>QR Code gerado aqui</span>
+                </div>
+              </div>
+
+              <div class="pix-copy-paste-box">
+                <label>Código Pix Copia e Cola</label>
+                <div class="copy-paste-input-wrapper">
+                  <input type="text" id="pix-emv-payload" readonly placeholder="Carregue os dados do Pix">
+                  <button type="button" class="btn-copy-code" id="btn-copy-pix" title="Copiar código Pix">
+                    <i class="fa-solid fa-copy"></i> Copiar
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ABA 4: BACKUP -->
+        <div class="tab-pane" id="tab-backup">
+          <h2>Backup do Sistema</h2>
+          <p class="tab-subtitle">Exporte todos os dados cadastrados ou restaure um backup anterior.</p>
+          
+          <div class="backup-cards-grid">
+            
+            <!-- Card Exportar -->
+            <div class="backup-card">
+              <div class="backup-card-icon export-icon">
+                <i class="fa-solid fa-file-export"></i>
+              </div>
+              <h3>Exportar Dados</h3>
+              <p>Baixe um arquivo contendo todos os Alunos, Pagamentos, Planos e Configurações salvos neste navegador.</p>
+              <button type="button" class="btn-novo-aluno btn-backup-action" id="btn-export-db">
+                <i class="fa-solid fa-download"></i> Exportar Banco (.json)
+              </button>
+            </div>
+
+            <!-- Card Importar -->
+            <div class="backup-card">
+              <div class="backup-card-icon import-icon">
+                <i class="fa-solid fa-file-import"></i>
+              </div>
+              <h3>Restaurar Backup</h3>
+              <p>Faça upload de um arquivo JSON anteriormente exportado para restaurar o banco de dados.</p>
+              <div class="import-file-wrapper">
+                <label for="cfg-backup-file" class="file-label">
+                  <i class="fa-solid fa-folder-open"></i> Selecionar Arquivo
+                </label>
+                <input type="file" id="cfg-backup-file" accept=".json" style="display: none;">
+                <span id="cfg-backup-filename" class="filename-display">Nenhum arquivo selecionado</span>
+              </div>
+              <button type="button" class="btn-novo-aluno btn-backup-action" id="btn-import-db" style="background: var(--aguardando); margin-top: 12px;" disabled>
+                <i class="fa-solid fa-upload"></i> Restaurar Banco
+              </button>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- ABA 5: SEGURANÇA E AUDITORIA -->
+        <div class="tab-pane" id="tab-seguranca">
+          <h2>Segurança e Auditoria</h2>
+          <p class="tab-subtitle">Monitore as sessões ativas dos operadores e consulte o histórico de modificações.</p>
+          
+          <div class="security-grid">
+            <!-- Solicitações de Acesso Pendentes -->
+            <div class="security-section" id="section-solicitacoes" style="grid-column: 1 / -1; margin-bottom: 24px; display: none;">
+              <h3>Solicitações de Acesso Pendentes</h3>
+              <div class="table-wrapper" style="box-shadow: none; border: 1px solid var(--border); margin-top: 10px; overflow-x: auto;">
+                <table style="width: 100%; border-collapse: collapse;">
+                  <thead>
+                    <tr>
+                      <th style="font-size:11px; padding: 10px 12px; text-align: left;">Nome</th>
+                      <th style="font-size:11px; padding: 10px 12px; text-align: left;">Login (Usuário)</th>
+                      <th style="font-size:11px; padding: 10px 12px; text-align: left;">E-mail</th>
+                      <th style="font-size:11px; padding: 10px 12px; text-align: left;">Nível de Acesso</th>
+                      <th style="font-size:11px; padding: 10px 12px; text-align: center; width: 220px;">Ações</th>
+                    </tr>
+                  </thead>
+                  <tbody id="tabela-solicitacoes" style="font-size: 12px;">
+                    <!-- Injetado dinamicamente -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Operadores Cadastrados (Gerenciar Usuários) -->
+            <div class="security-section" id="section-operadores" style="grid-column: 1 / -1; margin-bottom: 24px; display: none;">
+              <h3>Operadores Cadastrados</h3>
+              <div class="table-wrapper" style="box-shadow: none; border: 1px solid var(--border); margin-top: 10px; overflow-x: auto;">
+                <table style="width: 100%; border-collapse: collapse;">
+                  <thead>
+                    <tr>
+                      <th style="font-size:11px; padding: 10px 12px; text-align: left;">Nome</th>
+                      <th style="font-size:11px; padding: 10px 12px; text-align: left;">Login (Usuário)</th>
+                      <th style="font-size:11px; padding: 10px 12px; text-align: left;">E-mail</th>
+                      <th style="font-size:11px; padding: 10px 12px; text-align: left;">Nível de Acesso</th>
+                      <th style="font-size:11px; padding: 10px 12px; text-align: left;">Academia</th>
+                      <th style="font-size:11px; padding: 10px 12px; text-align: center; width: 260px;">Ações</th>
+                    </tr>
+                  </thead>
+                  <tbody id="tabela-operadores" style="font-size: 12px;">
+                    <!-- Injetado dinamicamente -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Sessões Ativas -->
+            <div class="security-section">
+              <h3>Sessões Ativas</h3>
+              <div class="sessions-list" id="sessions-container">
+                <!-- Injetado dinamicamente -->
+              </div>
+            </div>
+
+            <!-- Logs de Auditoria -->
+            <div class="security-section" style="margin-top: 24px;">
+              <div class="logs-header-bar">
+                <h3>Logs do Sistema (Histórico Recente)</h3>
+                <button type="button" class="btn-clear-logs" id="btn-clear-logs" style="font-size: 12px; color: var(--primary); background: none; border: none; cursor: pointer; display: flex; align-items: center; gap: 4px; font-weight: 600;">
+                  <i class="fa-solid fa-trash-can"></i> Limpar Histórico
+                </button>
+              </div>
+              
+              <div class="table-wrapper" style="box-shadow: none; border: 1px solid var(--border); margin-top: 10px; max-height: 350px; overflow-y: auto;">
+                <table>
+                  <thead>
+                    <tr>
+                      <th style="font-size:11px; padding: 10px 12px;">Data / Hora</th>
+                      <th style="font-size:11px; padding: 10px 12px;">Operador</th>
+                      <th style="font-size:11px; padding: 10px 12px;">Ação</th>
+                      <th style="font-size:11px; padding: 10px 12px;">Detalhes</th>
+                    </tr>
+                  </thead>
+                  <tbody id="tabela-logs" style="font-size: 12px;">
+                    <!-- Injetado dinamicamente -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- TOAST DE NOTIFICAÇÃO -->
+  <div class="toast" id="toast">
+    <i class="fa-solid fa-circle-check" id="toast-icone"></i>
+    <span id="toast-mensagem">Configurações salvas com sucesso!</span>
+  </div>
+
+  <!-- MODAL: ALTERAR SENHA DE OPERADOR -->
+  <div class="modal-overlay" id="modal-senha-operador-overlay" style="display: none; position: fixed; inset: 0; width: 100%; height: 100%; background: rgba(15, 25, 35, .55); z-index: 2000; align-items: center; justify-content: center; backdrop-filter: blur(3px);">
+    <div class="modal" style="background: var(--surface); border-radius: var(--r-md); border: 1px solid var(--border); box-shadow: var(--shadow-lg); width: 100%; max-width: 400px; padding: var(--sp-5); position: relative; box-sizing: border-box;">
+      <h3 style="margin-top: 0; margin-bottom: var(--sp-2); color: var(--text-1); font-size: 16px; font-weight: 700;">Alterar Senha do Operador</h3>
+      <p style="font-size: 13px; color: var(--text-3); margin-bottom: var(--sp-4);">Defina uma nova senha de sua preferência para o operador <strong id="modal-senha-nome-operador"></strong>.</p>
+      
+      <form id="form-alterar-senha-operador">
+        <input type="hidden" id="modal-senha-uuid-operador">
+        
+        <div class="campo-grupo" style="margin-bottom: var(--sp-4); display: flex; flex-direction: column; gap: 6px;">
+          <label for="modal-senha-nova" style="font-size: 12px; font-weight: 600; color: var(--text-2);">Nova Senha</label>
+          <div style="position: relative; display: flex; align-items: center; width: 100%;">
+            <input type="password" id="modal-senha-nova" required placeholder="Mínimo 6 caracteres" style="width: 100%; padding-right: 40px; box-sizing: border-box; height: 38px; border: 1px solid var(--border); border-radius: var(--r-sm); background: var(--surface); color: var(--text-1); padding-left: 12px;">
+            <button type="button" class="btn-toggle-password" style="position: absolute; right: 10px; background: none; border: none; color: var(--text-3); cursor: pointer; padding: 4px; display: flex; align-items: center;">
+              <i class="fa-solid fa-eye"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="campo-grupo" style="margin-bottom: var(--sp-4); display: flex; flex-direction: column; gap: 6px;">
+          <label for="modal-senha-confirmar" style="font-size: 12px; font-weight: 600; color: var(--text-2);">Confirmar Nova Senha</label>
+          <div style="position: relative; display: flex; align-items: center; width: 100%;">
+            <input type="password" id="modal-senha-confirmar" required placeholder="Repita a nova senha" style="width: 100%; padding-right: 40px; box-sizing: border-box; height: 38px; border: 1px solid var(--border); border-radius: var(--r-sm); background: var(--surface); color: var(--text-1); padding-left: 12px;">
+            <button type="button" class="btn-toggle-password" style="position: absolute; right: 10px; background: none; border: none; color: var(--text-3); cursor: pointer; padding: 4px; display: flex; align-items: center;">
+              <i class="fa-solid fa-eye"></i>
+            </button>
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: var(--sp-3); margin-top: var(--sp-4);">
+          <button type="button" class="btn-modal-cancelar" id="btn-cancelar-senha-operador" style="font-size: 13px; font-weight: 500; font-family: var(--font);">Cancelar</button>
+          <button type="submit" class="btn-modal-salvar" style="font-size: 13px; font-weight: 500; font-family: var(--font);">Salvar Senha</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bcryptjs@2.4.3/dist/bcrypt.min.js"></script>
+  <script src="../js/api.js"></script>
+  <script src="../js/db.js"></script>
+  <script src="jsConfig.js"></script>
+</body>
+
+</html>

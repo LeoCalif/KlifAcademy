@@ -1,0 +1,144 @@
+/* =====================================================
+   ESTILOS EXCLUSIVOS DA TELA DE PLANOS
+   ===================================================== */
+
+/* Cores customizadas para os cards operacionais de planos */
+.card-total-planos .summary-icon {
+  background: rgba(59, 130, 246, 0.08);
+}
+.card-total-planos .summary-icon i {
+  color: #3b82f6;
+}
+.card-total-planos .summary-value {
+  color: #3b82f6;
+}
+
+.card-planos-ativos .summary-icon {
+  background: var(--ativo-bg);
+}
+.card-planos-ativos .summary-icon i {
+  color: var(--ativo);
+}
+.card-planos-ativos .summary-value {
+  color: var(--ativo);
+}
+
+.card-plano-popular .summary-icon {
+  background: rgba(139, 92, 246, 0.08);
+}
+.card-plano-popular .summary-icon i {
+  color: #8b5cf6;
+}
+.card-plano-popular .summary-value {
+  color: #8b5cf6;
+}
+
+.card-alunos-vinculados .summary-icon {
+  background: rgba(108, 120, 136, 0.08);
+}
+.card-alunos-vinculados .summary-icon i {
+  color: #6c7888;
+}
+.card-alunos-vinculados .summary-value {
+  color: #6c7888;
+}
+
+/* Redefinição de layout de 4 colunas para os cards de planos */
+@media (min-width: 992px) {
+  .status-cards {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Estilização específica do botão Novo Plano */
+.btn-novo-plano {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: 0 var(--sp-5);
+  height: 42px;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: var(--r-md);
+  font-size: 14px;
+  font-weight: 600;
+  font-family: var(--font);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background .15s, transform .1s, box-shadow .15s;
+  box-shadow: 0 2px 8px rgba(232, 84, 94, 0.3);
+}
+
+.btn-novo-plano:hover {
+  background: var(--primary-hover);
+  box-shadow: 0 4px 12px rgba(232, 84, 94, 0.4);
+}
+
+.btn-novo-plano:active {
+  transform: scale(.98);
+}
+
+/* Badges adicionais para Status do Plano */
+.status-badge.status-arquivado {
+  background: rgba(108, 120, 136, 0.08);
+  color: #555e6b;
+}
+.status-badge.status-arquivado .status-dot {
+  background: #6c7888;
+}
+
+/* Espaçamento extra do modal para inputs */
+.modal-overlay .campos-grid {
+  margin-top: 10px;
+}
+
+/* Estilos de botões de ações específicas */
+.action-btn.btn-duplicar:hover {
+  background: rgba(139, 92, 246, 0.08);
+  border-color: #8b5cf6;
+  color: #8b5cf6;
+}
+
+.action-btn.btn-desativar:hover {
+  background: var(--ausente-bg);
+  border-color: var(--ausente);
+  color: var(--ausente);
+}
+
+.action-btn.btn-ativar:hover {
+  background: var(--ativo-bg);
+  border-color: var(--ativo);
+  color: var(--ativo);
+}
+
+.action-btn.btn-visualizar-alunos:hover {
+  background: rgba(59, 130, 246, 0.08);
+  border-color: #3b82f6;
+  color: #3b82f6;
+}
+
+.table-count.dias-ok[style*="cursor: pointer"]:hover {
+  color: var(--primary-hover) !important;
+}
+
+/* Textarea styling inside modals */
+.campo-grupo textarea {
+  width: 100%;
+  padding: var(--sp-3);
+  border-radius: var(--r-md);
+  border: 1px solid var(--border-d);
+  background: rgba(255, 255, 255, 0.5);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 13.5px;
+  outline: none;
+  resize: vertical;
+  transition: all 0.15s;
+}
+
+.campo-grupo textarea:focus {
+  border-color: var(--primary);
+  background: #ffffff;
+  box-shadow: 0 0 0 3px var(--primary-light);
+}

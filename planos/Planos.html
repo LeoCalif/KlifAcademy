@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Planos — Bem-Estar Fitness</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="../css/designSystem.css">
+  <link rel="stylesheet" href="../alunos/styleAluno.css">
+  <link rel="stylesheet" href="stylePlanos.css">
+</head>
+
+<body>
+
+  <!-- =====================================================
+     SIDEBAR (Menu Lateral)
+     ===================================================== -->
+  <aside class="sidebar">
+    <div>
+      <div class="sidebar-header">
+        <div class="sidebar-logo-icon">
+          <img src="../Assets/logoAcademia.png" alt="Logo Bem-Estar Fitness" class="logoAcademia">
+        </div>
+        <div class="sidebar-logo-text">
+          <strong>Bem-Estar</strong>
+          <span>Fitness</span>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <p class="nav-label">Menu</p>
+        <a href="../painel/Painel.html">
+          <i class="fa-solid fa-chart-line"></i>
+          Painel
+        </a>
+        <a href="../alunos/Alunos.html">
+          <i class="fa-solid fa-users"></i>
+          Alunos
+          <span class="nav-badge" id="sidebar-alunos-count">8</span>
+        </a>
+        <a href="../pagamentos/Pagamentos.html">
+          <i class="fa-solid fa-dollar-sign"></i>
+          Pagamentos
+        </a>
+        <a href="#" class="active">
+          <i class="fa-solid fa-clipboard-list"></i>
+          Planos
+        </a>
+        <a href="../config/config.html">
+          <i class="fa-solid fa-gear"></i>
+          Configurações
+        </a>
+      </nav>
+    </div>
+
+    <div class="sidebar-footer">
+      <p class="sidebar-footer-title">Dados</p>
+      <div class="sidebar-status">
+        <div class="status-dot-indicator"></div>
+        <span>Status: <strong>Atualizado</strong></span>
+      </div>
+      <!-- Botão Sair removido daqui e colocado no menu de perfil -->
+    </div>
+  </aside>
+
+  <!-- =====================================================
+     CONTEÚDO PRINCIPAL
+     ===================================================== -->
+  <main class="main-content">
+    
+    <!-- Cabeçalho da página -->
+    <header class="page-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--sp-4);">
+      <div>
+        <h1>Planos</h1>
+        <p>Gerencie os planos, valores e regras de negócios da academia</p>
+      </div>
+      <!-- Widget de Relógio Glassmorphic + Perfil -->
+      <div class="header-right-widgets" style="display: flex; align-items: center; gap: var(--sp-3);">
+        <div class="clock-widget">
+          <i class="fa-regular fa-clock"></i>
+          <span id="clock-time">00:00:00</span>
+        </div>
+        <!-- Perfil do Usuário com Dropdown -->
+        <div class="user-profile-menu" style="position: relative; cursor: pointer;">
+          <div class="user-avatar-placeholder" style="width: 40px; height: 40px; border-radius: 50%; background: var(--primary); color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 16px; border: 2px solid rgba(255, 255, 255, 0.8); box-shadow: var(--shadow-sm); user-select: none;">C</div>
+          <div class="profile-dropdown" style="display: none; position: absolute; right: 0; top: 48px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-md); box-shadow: var(--shadow-md); width: 140px; z-index: 1000; overflow: hidden; backdrop-filter: blur(10px); padding: 4px 0;">
+            <a href="../perfil/Perfil.html" style="display: flex; align-items: center; gap: 8px; padding: 10px 16px; color: var(--text-2); font-size: 13px; text-decoration: none; font-weight: 500; transition: all 0.15s ease;">
+              <i class="fa-solid fa-user-gear"></i> Ver Perfil
+            </a>
+            <hr style="border: none; border-top: 1px solid var(--border); margin: 4px 0;">
+            <a href="#" class="btn-logout" style="display: flex; align-items: center; gap: 8px; padding: 10px 16px; color: var(--primary); font-size: 13px; text-decoration: none; font-weight: 600; transition: all 0.15s ease;">
+              <i class="fa-solid fa-right-from-bracket"></i> Sair
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Barra superior de ações -->
+    <section class="top-actions">
+      <div class="search-bar">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" id="input-busca-plano" placeholder="Buscar plano por nome ou descrição...">
+      </div>
+      <button class="btn-novo-plano" id="btn-novo-plano">
+        <i class="fa-solid fa-circle-plus"></i>
+        Novo plano
+      </button>
+    </section>
+
+    <!-- Filtros de status -->
+    <section class="status-filters">
+      <button class="filter-btn active" data-filter="todos">Todos</button>
+      <button class="filter-btn" data-filter="ativo">Ativos</button>
+      <button class="filter-btn" data-filter="inativo">Inativos</button>
+      <button class="filter-btn" data-filter="arquivado">Arquivados</button>
+    </section>
+
+    <!-- Cards de resumo operacionais -->
+    <section class="status-cards">
+      <!-- Card 1: Total de Planos -->
+      <div class="summary-card card-total-planos">
+        <div class="summary-icon">
+          <i class="fa-solid fa-clipboard-list"></i>
+        </div>
+        <div class="summary-info">
+          <div class="summary-label">Total de Planos</div>
+          <div class="summary-value" id="count-total-planos">0</div>
+        </div>
+      </div>
+
+      <!-- Card 2: Planos Ativos -->
+      <div class="summary-card card-planos-ativos">
+        <div class="summary-icon">
+          <i class="fa-solid fa-circle-check"></i>
+        </div>
+        <div class="summary-info">
+          <div class="summary-label">Planos Ativos</div>
+          <div class="summary-value" id="count-planos-ativos" style="color: var(--ativo);">0</div>
+        </div>
+      </div>
+
+      <!-- Card 3: Plano Mais Utilizado -->
+      <div class="summary-card card-plano-popular">
+        <div class="summary-icon">
+          <i class="fa-solid fa-star"></i>
+        </div>
+        <div class="summary-info">
+          <div class="summary-label">Plano mais utilizado</div>
+          <div class="summary-value" id="label-plano-popular" style="font-size: 20px; padding-top: 4px;">—</div>
+        </div>
+      </div>
+
+      <!-- Card 4: Alunos Vinculados -->
+      <div class="summary-card card-alunos-vinculados">
+        <div class="summary-icon">
+          <i class="fa-solid fa-users"></i>
+        </div>
+        <div class="summary-info">
+          <div class="summary-label">Alunos Vinculados</div>
+          <div class="summary-value" id="count-alunos-vinculados">0</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tabela Principal de Planos -->
+    <section class="table-wrapper">
+      <div class="table-header-bar">
+        <h3>Lista de planos</h3>
+        <span class="table-count" id="table-count">0 planos</span>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th class="sortable" data-sort="nome" style="cursor: pointer; user-select: none;">Nome do Plano <i class="fa-solid fa-sort" style="margin-left: 4px; font-size: 11px; opacity: 0.6;"></i></th>
+            <th class="sortable" data-sort="duracao" style="cursor: pointer; user-select: none;">Duração <i class="fa-solid fa-sort" style="margin-left: 4px; font-size: 11px; opacity: 0.6;"></i></th>
+            <th class="sortable" data-sort="valor" style="cursor: pointer; user-select: none;">Valor <i class="fa-solid fa-sort" style="margin-left: 4px; font-size: 11px; opacity: 0.6;"></i></th>
+            <th>Status</th>
+            <th class="sortable" data-sort="vinculados" style="cursor: pointer; user-select: none;">Alunos Vinculados <i class="fa-solid fa-sort" style="margin-left: 4px; font-size: 11px; opacity: 0.6;"></i></th>
+            <th class="sortable" data-sort="alteracao" style="cursor: pointer; user-select: none;">Última Alteração <i class="fa-solid fa-sort-down" style="margin-left: 4px; font-size: 11px; opacity: 0.8;"></i></th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody id="tabela-planos">
+          <!-- Injetado dinamicamente via JS -->
+        </tbody>
+      </table>
+
+      <!-- Estado vazio -->
+      <div class="empty-state" id="empty-state">
+        <i class="fa-solid fa-clipboard-question"></i>
+        <p>Nenhum plano encontrado para este filtro.</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- =====================================================
+     MODAL DE CRIAÇÃO / EDIÇÃO / DUPLICAÇÃO DE PLANO
+     ===================================================== -->
+  <div class="modal-overlay" id="modal-plano-overlay">
+    <div class="modal modal-pequeno" id="modal-plano" style="max-width: 500px;">
+      
+      <!-- Cabeçalho do modal -->
+      <div class="modal-header">
+        <div class="modal-header-info">
+          <div class="modal-avatar" id="modal-plano-avatar"><i class="fa-solid fa-clipboard-list"></i></div>
+          <div class="modal-titular">
+            <div class="modal-nome" id="modal-plano-titulo">Novo Plano</div>
+            <div class="modal-meta">
+              <span class="modal-vencimento">Defina as regras de negócio e cobrança</span>
+            </div>
+          </div>
+        </div>
+        <div class="modal-header-actions">
+          <button class="btn-modal-fechar" id="btn-fechar-plano">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Corpo do modal -->
+      <div class="modal-corpo" style="padding: 24px">
+        <form id="form-plano" novalidate>
+          <div class="campos-grid">
+            
+            <!-- Nome do Plano -->
+            <div class="campo-grupo campo-largo">
+              <label for="plano-nome">Nome do Plano <span style="color: var(--primary);">*</span></label>
+              <input type="text" id="plano-nome" placeholder="Ex: Mensal Premium, Trimestral" required>
+            </div>
+
+            <!-- Valor (R$) -->
+            <div class="campo-grupo">
+              <label for="plano-valor">Valor cobrado (R$) <span style="color: var(--primary);">*</span></label>
+              <input type="number" id="plano-valor" step="0.01" min="0" placeholder="Ex: 90.00" required>
+            </div>
+
+            <!-- Duração (dias) -->
+            <div class="campo-grupo">
+              <label for="plano-duracao">Duração (dias) <span style="color: var(--primary);">*</span></label>
+              <input type="number" id="plano-duracao" min="1" placeholder="Ex: 30, 90" required>
+            </div>
+
+            <!-- Status -->
+            <div class="campo-grupo campo-largo">
+              <label for="plano-status">Status do Plano</label>
+              <select id="plano-status">
+                <option value="ativo">Ativo</option>
+                <option value="inativo">Inativo</option>
+                <option value="arquivado">Arquivado</option>
+              </select>
+            </div>
+
+            <!-- Descrição -->
+            <div class="campo-grupo campo-largo">
+              <label for="plano-descricao">Descrição do Plano</label>
+              <input type="text" id="plano-descricao" placeholder="Ex: Acesso livre à musculação e área cardio.">
+            </div>
+
+            <!-- Observações (Regras de Negócio) -->
+            <div class="campo-grupo campo-largo">
+              <label for="plano-observacoes">Anotações / Regras internas</label>
+              <textarea id="plano-observacoes" rows="3" placeholder="Ex: Permite trancamento de matrícula de até 15 dias..."></textarea>
+            </div>
+
+          </div>
+
+          <!-- Ações do Modal -->
+          <div class="pag-acoes" style="margin-top: 24px; display: flex; justify-content: flex-end; gap: var(--sp-3);">
+            <button type="button" class="btn-modal-cancelar" id="btn-cancelar-plano">Cancelar</button>
+            <button type="submit" class="btn-modal-salvar" id="btn-salvar-plano">
+              <i class="fa-solid fa-check"></i>
+              Confirmar
+            </button>
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- TOAST DE SUCESSO / ALERTA -->
+  <div class="toast" id="toast">
+    <i class="fa-solid fa-circle-check" id="toast-icone"></i>
+    <span id="toast-mensagem">Operação realizada com sucesso!</span>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bcryptjs@2.4.3/dist/bcrypt.min.js"></script>
+  <script src="../js/api.js"></script>
+  <script src="../js/db.js"></script>
+  <script src="jsPlanos.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,23 @@
+# Pastas de Anotações e Documentação Interna
+Anotações - Ignorar no GIT/
+
+# Arquivos de Sistema do Windows
+Thumbs.db
+desktop.ini
+
+# IDEs e Editores (VSCode, JetBrains, etc.)
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+
+# Arquivos de logs e temporários do Agente AI
+.gemini/
+antigravity-ide/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

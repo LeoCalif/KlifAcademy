@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alunos — Bem-Estar Fitness</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="styleAluno.css">
+  <link rel="stylesheet" href="../css/designSystem.css">
+</head>
+
+<body>
+
+  <!-- =====================================================
+     SIDEBAR
+     ===================================================== -->
+  <aside class="sidebar">
+
+    <!-- Header: logo + nome da academia -->
+    <div>
+      <div class="sidebar-header">
+        <div class="sidebar-logo-icon">
+          <img src="../Assets/logoAcademia.png" alt="Logo Bem-Estar Fitness" class="logoAcademia">
+        </div>
+        <div class="sidebar-logo-text">
+          <strong>Bem-Estar</strong>
+          <span>Fitness</span>
+        </div>
+      </div>
+
+      <!-- Nav: links principais -->
+      <nav class="sidebar-nav">
+        <p class="nav-label">Menu</p>
+        <a href="../painel/Painel.html">
+          <i class="fa-solid fa-chart-line"></i>
+          Painel
+        </a>
+        <a href="#" class="active">
+          <i class="fa-solid fa-users"></i>
+          Alunos
+          <span class="nav-badge">7</span>
+        </a>
+        <a href="../pagamentos/Pagamentos.html">
+          <i class="fa-solid fa-dollar-sign"></i>
+          Pagamentos
+        </a>
+        <a href="../planos/Planos.html">
+          <i class="fa-solid fa-clipboard-list"></i>
+          Planos
+        </a>
+        <a href="../config/config.html">
+          <i class="fa-solid fa-gear"></i>
+          Configurações
+        </a>
+      </nav>
+    </div>
+
+    <!-- Footer: status + botão sair -->
+    <div class="sidebar-footer">
+      <p class="sidebar-footer-title">Dados</p>
+
+      <div class="sidebar-status">
+        <div class="status-dot-indicator"></div>
+        <span>Status: <strong>Atualizado</strong></span>
+      </div>
+
+      <!-- Botão Sair removido daqui e colocado no menu de perfil -->
+    </div>
+
+  </aside>
+
+
+  <!-- =====================================================
+     CONTEÚDO PRINCIPAL
+     ===================================================== -->
+  <main class="main-content">
+
+    <!-- Cabeçalho da página -->
+    <header class="page-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--sp-4);">
+      <div>
+        <h1>Alunos</h1>
+        <p>Gerencie todos os alunos cadastrados na academia</p>
+      </div>
+      <!-- Widget de Relógio Glassmorphic + Perfil -->
+      <div class="header-right-widgets" style="display: flex; align-items: center; gap: var(--sp-3);">
+        <div class="clock-widget">
+          <i class="fa-regular fa-clock"></i>
+          <span id="clock-time">00:00:00</span>
+        </div>
+        <!-- Perfil do Usuário com Dropdown -->
+        <div class="user-profile-menu" style="position: relative; cursor: pointer;">
+          <div class="user-avatar-placeholder" style="width: 40px; height: 40px; border-radius: 50%; background: var(--primary); color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 16px; border: 2px solid rgba(255, 255, 255, 0.8); box-shadow: var(--shadow-sm); user-select: none;">C</div>
+          <div class="profile-dropdown" style="display: none; position: absolute; right: 0; top: 48px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-md); box-shadow: var(--shadow-md); width: 140px; z-index: 1000; overflow: hidden; backdrop-filter: blur(10px); padding: 4px 0;">
+            <a href="../perfil/Perfil.html" style="display: flex; align-items: center; gap: 8px; padding: 10px 16px; color: var(--text-2); font-size: 13px; text-decoration: none; font-weight: 500; transition: all 0.15s ease;">
+              <i class="fa-solid fa-user-gear"></i> Ver Perfil
+            </a>
+            <hr style="border: none; border-top: 1px solid var(--border); margin: 4px 0;">
+            <a href="#" class="btn-logout" style="display: flex; align-items: center; gap: 8px; padding: 10px 16px; color: var(--primary); font-size: 13px; text-decoration: none; font-weight: 600; transition: all 0.15s ease;">
+              <i class="fa-solid fa-right-from-bracket"></i> Sair
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Barra de busca + botão -->
+    <section class="top-actions">
+      <div class="search-bar">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" id="input-busca" placeholder="Buscar por nome, CPF ou telefone...">
+      </div>
+      <button class="btn-novo-aluno" id="btn-novo-aluno">
+        <i class="fa-solid fa-user-plus"></i>
+        Novo aluno
+      </button>
+    </section>
+
+    <!-- Filtros de status -->
+    <section class="status-filters">
+      <button class="filter-btn active" data-filter="todos">Todos</button>
+      <button class="filter-btn" data-filter="ativo">Ativos</button>
+      <button class="filter-btn" data-filter="aguardando">Aguardando</button>
+      <button class="filter-btn" data-filter="ausente">Ausentes</button>
+      <button class="filter-btn" data-filter="pausa">Em pausa</button>
+      <button class="filter-btn" data-filter="inativo">Inativos</button>
+    </section>
+
+    <!-- Cards de resumo -->
+    <section class="status-cards">
+      <div class="summary-card card-ativos">
+        <div class="summary-icon">
+          <i class="fa-solid fa-circle-check"></i>
+        </div>
+        <div class="summary-info">
+          <div class="summary-label">Ativos</div>
+          <div class="summary-value" id="count-ativos">3</div>
+        </div>
+      </div>
+      <div class="summary-card card-aguardando">
+        <div class="summary-icon">
+          <i class="fa-solid fa-clock"></i>
+        </div>
+        <div class="summary-info">
+          <div class="summary-label">Aguardando Pagamento</div>
+          <div class="summary-value" id="count-aguardando">2</div>
+        </div>
+      </div>
+      <div class="summary-card card-ausentes">
+        <div class="summary-icon">
+          <i class="fa-solid fa-user-slash"></i>
+        </div>
+        <div class="summary-info">
+          <div class="summary-label">Ausentes</div>
+          <div class="summary-value" id="count-ausentes">1</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tabela de alunos -->
+    <section class="table-wrapper">
+      <div class="table-header-bar">
+        <h3>Lista de alunos</h3>
+        <span class="table-count" id="table-count">7 alunos</span>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th class="sortable" data-sort="nome" style="cursor: pointer; user-select: none;">Nome <i class="fa-solid fa-sort" style="margin-left: 4px; font-size: 11px; opacity: 0.6;"></i></th>
+            <th class="sortable" data-sort="plano" style="cursor: pointer; user-select: none;">Plano <i class="fa-solid fa-sort" style="margin-left: 4px; font-size: 11px; opacity: 0.6;"></i></th>
+            <th class="sortable" data-sort="status" style="cursor: pointer; user-select: none;">Status <i class="fa-solid fa-sort" style="margin-left: 4px; font-size: 11px; opacity: 0.6;"></i></th>
+            <th class="sortable" data-sort="vencimento" style="cursor: pointer; user-select: none;">Vencimento <i class="fa-solid fa-sort" style="margin-left: 4px; font-size: 11px; opacity: 0.6;"></i></th>
+            <th class="sortable" data-sort="dias" style="cursor: pointer; user-select: none;">Dias Restantes <i class="fa-solid fa-sort" style="margin-left: 4px; font-size: 11px; opacity: 0.6;"></i></th>
+            <th>Telefone</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody id="tabela-alunos">
+
+          <tr data-status="ativo">
+            <td>
+              <div class="aluno-nome">Ana Beatriz Souza</div>
+            </td>
+            <td>Mensal</td>
+            <td>
+              <span class="status-badge status-ativo">
+                <span class="status-dot"></span> Ativo
+              </span>
+            </td>
+            <td>28/05/2026</td>
+            <td><span class="dias-aviso">2 dias</span></td>
+            <td>(11) 98765-4321</td>
+            <td class="action-icons">
+              <button class="action-btn" title="Visualizar"><i class="fa-solid fa-eye"></i></button>
+              <button class="action-btn btn-pagar" title="Registrar Pagamento"><i
+                  class="fa-solid fa-dollar-sign"></i></button>
+              <button class="action-btn btn-pausar" title="Pausar Matrícula"><i class="fa-solid fa-pause"></i></button>
+              <button class="action-btn btn-inativar" title="Inativar Aluno"><i
+                  class="fa-solid fa-user-xmark"></i></button>
+            </td>
+          </tr>
+
+          <tr data-status="aguardando">
+            <td>
+              <div class="aluno-nome">Carlos Eduardo Silva</div>
+            </td>
+            <td>Trimestral</td>
+            <td>
+              <span class="status-badge status-aguardando">
+                <span class="status-dot"></span> Aguardando
+              </span>
+            </td>
+            <td>15/05/2026</td>
+            <td><span class="dias-vencido">-11 dias (Vencido)</span></td>
+            <td>(11) 97654-3210</td>
+            <td class="action-icons">
+              <button class="action-btn" title="Visualizar"><i class="fa-solid fa-eye"></i></button>
+              <button class="action-btn btn-pagar" title="Registrar Pagamento"><i
+                  class="fa-solid fa-dollar-sign"></i></button>
+              <button class="action-btn btn-pausar" title="Pausar Matrícula"><i class="fa-solid fa-pause"></i></button>
+              <button class="action-btn btn-inativar" title="Inativar Aluno"><i
+                  class="fa-solid fa-user-xmark"></i></button>
+            </td>
+          </tr>
+
+          <tr data-status="ausente">
+            <td>
+              <div class="aluno-nome">Fernanda Lima Santos</div>
+            </td>
+            <td>Mensal</td>
+            <td>
+              <span class="status-badge status-ausente">
+                <span class="status-dot"></span> Ausente
+              </span>
+            </td>
+            <td>02/05/2026</td>
+            <td><span class="dias-vencido">-24 dias (Vencido)</span></td>
+            <td>(11) 96543-2109</td>
+            <td class="action-icons">
+              <button class="action-btn" title="Visualizar"><i class="fa-solid fa-eye"></i></button>
+              <button class="action-btn btn-pagar" title="Registrar Pagamento"><i
+                  class="fa-solid fa-dollar-sign"></i></button>
+              <button class="action-btn btn-pausar" title="Pausar Matrícula"><i class="fa-solid fa-pause"></i></button>
+              <button class="action-btn btn-inativar" title="Inativar Aluno"><i
+                  class="fa-solid fa-user-xmark"></i></button>
+            </td>
+          </tr>
+
+          <tr data-status="pausa">
+            <td>
+              <div class="aluno-nome">Rodrigo Matos Oliveira</div>
+            </td>
+            <td>Semestral</td>
+            <td>
+              <span class="status-badge status-pausa">
+                <span class="status-dot"></span> Em pausa
+              </span>
+            </td>
+            <td>—</td>
+            <td><span class="dias-neutro">—</span></td>
+            <td>(11) 95432-1098</td>
+            <td class="action-icons">
+              <button class="action-btn" title="Visualizar"><i class="fa-solid fa-eye"></i></button>
+              <button class="action-btn btn-pagar" title="Registrar Pagamento"><i
+                  class="fa-solid fa-dollar-sign"></i></button>
+              <button class="action-btn btn-pausar" title="Reativar Matrícula"><i class="fa-solid fa-play"></i></button>
+              <button class="action-btn btn-inativar" title="Inativar Aluno"><i
+                  class="fa-solid fa-user-xmark"></i></button>
+            </td>
+          </tr>
+
+          <tr data-status="ativo">
+            <td>
+              <div class="aluno-nome">Juliana Costa Pereira</div>
+            </td>
+            <td>Mensal</td>
+            <td>
+              <span class="status-badge status-ativo">
+                <span class="status-dot"></span> Ativo
+              </span>
+            </td>
+            <td>30/05/2026</td>
+            <td><span class="dias-ok">4 dias</span></td>
+            <td>(11) 94321-0987</td>
+            <td class="action-icons">
+              <button class="action-btn" title="Visualizar"><i class="fa-solid fa-eye"></i></button>
+              <button class="action-btn btn-pagar" title="Registrar Pagamento"><i
+                  class="fa-solid fa-dollar-sign"></i></button>
+              <button class="action-btn btn-pausar" title="Pausar Matrícula"><i class="fa-solid fa-pause"></i></button>
+              <button class="action-btn btn-inativar" title="Inativar Aluno"><i
+                  class="fa-solid fa-user-xmark"></i></button>
+            </td>
+          </tr>
+
+          <tr data-status="aguardando">
+            <td>
+              <div class="aluno-nome">Mariana Rodrigues</div>
+            </td>
+            <td>Mensal</td>
+            <td>
+              <span class="status-badge status-aguardando">
+                <span class="status-dot"></span> Aguardando
+              </span>
+            </td>
+            <td>18/05/2026</td>
+            <td><span class="dias-vencido">-8 dias (Vencido)</span></td>
+            <td>(11) 92109-8765</td>
+            <td class="action-icons">
+              <button class="action-btn" title="Visualizar"><i class="fa-solid fa-eye"></i></button>
+              <button class="action-btn btn-pagar" title="Registrar Pagamento"><i
+                  class="fa-solid fa-dollar-sign"></i></button>
+              <button class="action-btn btn-pausar" title="Pausar Matrícula"><i class="fa-solid fa-pause"></i></button>
+              <button class="action-btn btn-inativar" title="Inativar Aluno"><i
+                  class="fa-solid fa-user-xmark"></i></button>
+            </td>
+          </tr>
+
+          <tr data-status="inativo">
+            <td>
+              <div class="aluno-nome">Lucas Fernandes</div>
+            </td>
+            <td>Mensal</td>
+            <td>
+              <span class="status-badge status-inativo">
+                <span class="status-dot"></span> Inativo
+              </span>
+            </td>
+            <td>—</td>
+            <td><span class="dias-neutro">—</span></td>
+            <td>(11) 91098-7654</td>
+            <td class="action-icons">
+              <button class="action-btn" title="Visualizar"><i class="fa-solid fa-eye"></i></button>
+              <button class="action-btn btn-pagar" title="Registrar Pagamento"><i
+                  class="fa-solid fa-dollar-sign"></i></button>
+              <button class="action-btn btn-pausar" title="Pausar Matrícula"><i class="fa-solid fa-pause"></i></button>
+              <button class="action-btn btn-inativar" title="Inativar Aluno"><i
+                  class="fa-solid fa-user-xmark"></i></button>
+            </td>
+          </tr>
+
+        </tbody>
+      </table>
+
+      <!-- Estado vazio (aparece quando filtro não tem resultado) -->
+      <div class="empty-state" id="empty-state">
+        <i class="fa-solid fa-users-slash"></i>
+        <p>Nenhum aluno encontrado para este filtro.</p>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- MODAL DOS ALUNOS------------------------------------------------------------------------------------------------------ -->
+
+  <!-- OVERLAY — fundo escurecido -->
+  <div class="modal-overlay" id="modal-overlay">
+
+    <!-- MODAL PRINCIPAL -->
+    <div class="modal" id="modal-aluno">
+
+      <!-- CABEÇALHO DO MODAL -->
+      <div class="modal-header">
+
+        <div class="modal-header-info">
+          <div class="modal-avatar" id="modal-avatar">A</div>
+          <div class="modal-titular">
+            <div class="modal-nome" id="modal-nome">Ana Beatriz Souza</div>
+            <div class="modal-meta">
+              <span class="status-badge status-ativo" id="modal-status-badge">
+                <span class="status-dot"></span>
+                <span id="modal-status-texto">Ativo</span>
+              </span>
+              <span class="modal-plano" id="modal-plano">Plano Mensal</span>
+              <span class="modal-vencimento" id="modal-vencimento">Vence 28/05/2026</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-header-actions">
+          <button class="btn-modal-editar" id="btn-editar">
+            <i class="fa-solid fa-pen-to-square"></i> Editar
+          </button>
+          <button class="btn-modal-salvar" id="btn-salvar" style="display:none">
+            <i class="fa-solid fa-check"></i> Salvar
+          </button>
+          <button class="btn-modal-cancelar" id="btn-cancelar" style="display:none">
+            Cancelar
+          </button>
+          <button class="btn-modal-fechar" id="btn-fechar">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+
+      </div>
+
+      <!-- MÉTRICAS RÁPIDAS -->
+      <div class="modal-metricas">
+        <div class="metrica">
+          <span class="metrica-valor dias-aviso" id="metrica-dias">2 dias</span>
+          <span class="metrica-label">até vencer</span>
+        </div>
+        <div class="metrica-divider"></div>
+        <div class="metrica">
+          <span class="metrica-valor" id="metrica-total">R$ 240,00</span>
+          <span class="metrica-label">total pago</span>
+        </div>
+        <div class="metrica-divider"></div>
+        <div class="metrica">
+          <span class="metrica-valor" id="metrica-membro">128 dias</span>
+          <span class="metrica-label">como membro</span>
+        </div>
+      </div>
+
+      <!-- AÇÕES RÁPIDAS -->
+      <div class="modal-acoes-rapidas">
+        <button class="btn-acao-rapida btn-pagar">
+          <i class="fa-solid fa-dollar-sign"></i> Registrar Pagamento
+        </button>
+        <button class="btn-acao-rapida btn-pausar">
+          <i class="fa-solid fa-pause"></i> Pausar Matrícula
+        </button>
+        <button class="btn-acao-rapida btn-inativar">
+          <i class="fa-solid fa-user-xmark"></i> Inativar
+        </button>
+      </div>
+
+      <!-- ABAS -->
+      <div class="modal-abas">
+        <button class="aba-btn active" data-aba="dados">Dados Pessoais</button>
+        <button class="aba-btn" data-aba="pagamentos">Pagamentos</button>
+        <button class="aba-btn" data-aba="historico">Histórico</button>
+        <button class="aba-btn" data-aba="observacoes">Observações</button>
+      </div>
+
+      <!-- CONTEÚDO DAS ABAS -->
+      <div class="modal-corpo">
+
+        <!-- ABA: DADOS PESSOAIS -->
+        <div class="aba-conteudo active" id="aba-dados">
+          <div class="campos-grid">
+
+            <div class="campo-grupo">
+              <label>Nome completo</label>
+              <input type="text" id="input-aluno-nome" placeholder="Ex: João da Silva" disabled>
+            </div>
+
+            <div class="campo-grupo">
+              <label>CPF</label>
+              <input type="text" id="input-aluno-cpf" placeholder="000.000.000-00" disabled>
+            </div>
+
+            <div class="campo-grupo">
+              <label>Data de nascimento</label>
+              <input type="date" id="input-aluno-data-nasc" disabled>
+            </div>
+
+            <div class="campo-grupo">
+              <label>Sexo</label>
+              <select id="input-aluno-sexo" disabled>
+                <option value="">Selecione</option>
+                <option value="M">Masculino</option>
+                <option value="F">Feminino</option>
+                <option value="O">Outro</option>
+              </select>
+            </div>
+
+            <div class="campo-grupo">
+              <label>Telefone</label>
+              <input type="text" id="input-aluno-telefone" placeholder="(11) 99999-9999" disabled>
+            </div>
+
+            <div class="campo-grupo">
+              <label>E-mail</label>
+              <input type="email" id="input-aluno-email" placeholder="email@exemplo.com" disabled>
+            </div>
+
+            <div class="campo-grupo">
+              <label>Plano atual</label>
+              <select id="input-aluno-plano" disabled>
+                <option value="Mensal">Mensal</option>
+                <option value="Quinzenal">Quinzenal</option>
+                <option value="Trimestral">Trimestral</option>
+              </select>
+            </div>
+
+            <div class="campo-grupo">
+              <label>CEP</label>
+              <input type="text" id="input-aluno-cep" placeholder="00000-000" disabled>
+            </div>
+
+            <div class="campo-grupo">
+              <label>Cidade</label>
+              <input type="text" id="input-aluno-cidade" placeholder="Ex: Itapetinga" disabled>
+            </div>
+
+            <div class="campo-grupo">
+              <label>Estado</label>
+              <input type="text" id="input-aluno-estado" placeholder="Ex: BA" disabled>
+            </div>
+
+            <div class="campo-grupo">
+              <label>Bairro</label>
+              <input type="text" id="input-aluno-bairro" placeholder="Ex: Centro" disabled>
+            </div>
+
+            <div class="campo-grupo campo-largo">
+              <label>Rua</label>
+              <input type="text" id="input-aluno-rua" placeholder="Ex: Rua das Flores, 100" disabled>
+            </div>
+
+            <div class="campo-grupo">
+              <label>Data de matrícula</label>
+              <input type="date" id="input-aluno-data-matricula" disabled>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- ABA: PAGAMENTOS -->
+        <div class="aba-conteudo" id="aba-pagamentos">
+          <div class="aba-header-action">
+            <span>Histórico de pagamentos</span>
+            <button class="btn-registrar-pag">
+              <i class="fa-solid fa-plus"></i> Registrar Pagamento
+            </button>
+          </div>
+          <table class="tabela-modal">
+            <thead>
+              <tr>
+                <th>Data</th>
+                <th>Plano</th>
+                <th>Valor</th>
+                <th>Forma</th>
+                <th>Novo Vencimento</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>28/04/2026</td>
+                <td>Mensal</td>
+                <td>R$ 90,00</td>
+                <td>Pix</td>
+                <td>28/05/2026</td>
+                <td><span class="status-badge status-ativo" style="font-size:11px;padding:3px 8px"><span
+                      class="status-dot"></span> Confirmado</span></td>
+              </tr>
+              <tr>
+                <td>28/03/2026</td>
+                <td>Mensal</td>
+                <td>R$ 90,00</td>
+                <td>Dinheiro</td>
+                <td>28/04/2026</td>
+                <td><span class="status-badge status-ativo" style="font-size:11px;padding:3px 8px"><span
+                      class="status-dot"></span> Confirmado</span></td>
+              </tr>
+              <tr>
+                <td>28/02/2026</td>
+                <td>Mensal</td>
+                <td>R$ 90,00</td>
+                <td>Pix</td>
+                <td>28/03/2026</td>
+                <td><span class="status-badge status-ativo" style="font-size:11px;padding:3px 8px"><span
+                      class="status-dot"></span> Confirmado</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- ABA: HISTÓRICO -->
+        <div class="aba-conteudo" id="aba-historico">
+          <div class="timeline">
+            <div class="timeline-item">
+              <div class="timeline-dot dot-verde"></div>
+              <div class="timeline-content">
+                <div class="timeline-titulo">Pagamento registrado</div>
+                <div class="timeline-desc">Mensalidade de R$ 90,00 via Pix. Novo vencimento: 28/05/2026</div>
+                <div class="timeline-data">28/04/2026 · Admin</div>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-dot dot-azul"></div>
+              <div class="timeline-content">
+                <div class="timeline-titulo">Reativação de matrícula</div>
+                <div class="timeline-desc">Matrícula reativada após período de pausa.</div>
+                <div class="timeline-data">01/04/2026 · Admin</div>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-dot dot-amarelo"></div>
+              <div class="timeline-content">
+                <div class="timeline-titulo">Matrícula pausada</div>
+                <div class="timeline-desc">Pausa solicitada pela aluna por motivo de viagem.</div>
+                <div class="timeline-data">10/03/2026 · Admin</div>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-dot dot-verde"></div>
+              <div class="timeline-content">
+                <div class="timeline-titulo">Aluno cadastrado</div>
+                <div class="timeline-desc">Cadastro realizado com plano Mensal.</div>
+                <div class="timeline-data">20/11/2025 · Admin</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ABA: OBSERVAÇÕES -->
+        <div class="aba-conteudo" id="aba-observacoes">
+          <div class="campo-grupo" style="grid-column:1/-1">
+            <label>Anotações administrativas</label>
+            <textarea rows="6" disabled
+              placeholder="Nenhuma observação registrada...">Aluna pontual nos pagamentos. Prefere aulas no período da manhã.</textarea>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL DE PAGAMENTO -->
+  <div class="modal-overlay modal-overlay-secundario" id="modal-pagamento-overlay">
+    <div class="modal modal-pequeno" id="modal-pagamento">
+
+      <div class="modal-header">
+        <div class="modal-header-info">
+          <div class="modal-titular">
+            <div class="modal-nome">Registrar Pagamento</div>
+            <div class="modal-meta">
+              <span class="status-badge" id="pag-status-badge">
+                <span class="status-dot"></span>
+                <span id="pag-status-texto">Ativo</span>
+              </span>
+              <span class="modal-vencimento" id="pag-vencimento-atual"></span>
+            </div>
+          </div>
+        </div>
+        <div class="modal-header-actions">
+          <button class="btn-modal-fechar" id="btn-fechar-pagamento">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="modal-corpo" style="padding: 24px">
+
+        <!-- Info do aluno -->
+        <div class="pag-aluno-info">
+          <i class="fa-solid fa-user"></i>
+          <span id="pag-nome-aluno">Ana Beatriz Souza</span>
+        </div>
+
+        <!-- Formulário -->
+        <div class="campos-grid" style="margin-top: 20px">
+
+          <div class="campo-grupo">
+            <label>Plano</label>
+            <select id="pag-plano">
+              <option value="Mensal" data-valor="90.00" data-dias="30">Mensal — R$ 90,00</option>
+              <option value="Quinzenal" data-valor="60.00" data-dias="15">Quinzenal — R$ 60,00</option>
+              <option value="Trimestral" data-valor="270.00" data-dias="90">Trimestral — R$ 270,00</option>
+            </select>
+          </div>
+
+          <div class="campo-grupo">
+            <label>Valor cobrado (R$)</label>
+            <input type="number" id="pag-valor" step="0.01" min="0">
+          </div>
+
+          <div class="campo-grupo">
+            <label>Forma de pagamento</label>
+            <select id="pag-forma">
+              <option value="pix">Pix</option>
+              <option value="dinheiro">Dinheiro</option>
+              <option value="debito">Cartão de débito</option>
+              <option value="credito">Cartão de crédito</option>
+            </select>
+          </div>
+
+          <div class="campo-grupo">
+            <label>Data do pagamento</label>
+            <input type="date" id="pag-data">
+          </div>
+
+          <div class="campo-grupo campo-largo">
+            <label>Observações (opcional)</label>
+            <input type="text" id="pag-obs" placeholder="Ex: desconto concedido...">
+          </div>
+
+        </div>
+
+        <!-- Novo vencimento calculado -->
+        <div class="pag-novo-vencimento">
+          <div class="pag-venc-label">Novo vencimento calculado</div>
+          <div class="pag-venc-valor" id="pag-novo-vencimento">—</div>
+        </div>
+
+        <!-- Botões -->
+        <div class="pag-acoes">
+          <button class="btn-modal-cancelar" id="btn-cancelar-pagamento">
+            Cancelar
+          </button>
+          <button class="btn-modal-salvar" id="btn-confirmar-pagamento">
+            <i class="fa-solid fa-check"></i> Confirmar pagamento
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!-- MODAL DE COMPROVANTE -->
+  <div class="modal-overlay modal-overlay-terciario" id="modal-comprovante-overlay">
+    <div class="modal modal-pequeno" id="modal-comprovante">
+
+      <div class="modal-header">
+        <div class="modal-titular">
+          <div class="modal-nome">Comprovante de Pagamento</div>
+          <div class="modal-meta">
+            <span class="modal-vencimento">Pagamento registrado com sucesso</span>
+          </div>
+        </div>
+        <div class="modal-header-actions">
+          <button class="btn-modal-fechar" id="btn-fechar-comprovante">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="modal-corpo" style="padding: 24px">
+
+        <!-- Comprovante visual -->
+        <div class="comprovante-box" id="comprovante-box">
+          <div class="comprovante-header">
+            <img id="comp-logo-img" src="../Assets/logoAcademia.png" alt="Logo" class="comp-logo-img">
+            <div>
+              <div class="comp-academia" id="comp-academia-nome">Bem-Estar Fitness</div>
+              <div class="comp-sub">Comprovante de Pagamento</div>
+            </div>
+          </div>
+          <div class="comprovante-linha">
+            <span>Aluno</span>
+            <strong id="comp-nome">—</strong>
+          </div>
+          <div class="comprovante-linha">
+            <span>Plano</span>
+            <strong id="comp-plano">—</strong>
+          </div>
+          <div class="comprovante-linha">
+            <span>Valor pago</span>
+            <strong id="comp-valor">—</strong>
+          </div>
+          <div class="comprovante-linha">
+            <span>Forma</span>
+            <strong id="comp-forma">—</strong>
+          </div>
+          <div class="comprovante-linha">
+            <span>Data</span>
+            <strong id="comp-data">—</strong>
+          </div>
+          <div class="comprovante-linha destaque">
+            <span>Próximo vencimento</span>
+            <strong id="comp-vencimento">—</strong>
+          </div>
+        </div>
+
+        <!-- Botões do comprovante -->
+        <div class="pag-acoes" style="margin-top: 20px">
+          <button class="btn-whatsapp" id="btn-copiar-whatsapp">
+            <i class="fa-brands fa-whatsapp"></i> Copiar para WhatsApp
+          </button>
+          <button class="btn-modal-salvar" id="btn-imprimir">
+            <i class="fa-solid fa-print"></i> Imprimir / PDF
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL DE CONFIRMAÇÃO (pausar / inativar) -->
+  <div class="modal-overlay modal-overlay-secundario" id="modal-confirmacao-overlay">
+    <div class="modal modal-confirmacao" id="modal-confirmacao">
+
+      <div class="modal-confirmacao-icone" id="conf-icone">
+        <i class="fa-solid fa-pause" id="conf-icone-i"></i>
+      </div>
+
+      <div class="modal-confirmacao-titulo" id="conf-titulo">
+        Pausar matrícula
+      </div>
+
+      <div class="modal-confirmacao-desc" id="conf-desc">
+        Tem certeza que deseja pausar a matrícula de <strong id="conf-nome">João da Silva</strong>?
+      </div>
+
+      <div class="modal-confirmacao-acoes">
+        <button class="btn-modal-cancelar" id="btn-cancelar-confirmacao">
+          Cancelar
+        </button>
+        <button class="btn-modal-salvar" id="btn-confirmar-acao" style="background: var(--aguardando)">
+          <i class="fa-solid fa-pause" id="conf-btn-icone"></i>
+          <span id="conf-btn-texto">Pausar</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- TOAST DE SUCESSO -->
+  <div class="toast" id="toast">
+    <i class="fa-solid fa-circle-check"></i>
+    <span id="toast-mensagem">Pagamento registrado com sucesso!</span>
+  </div>
+
+  <!-- MODAL PERGUNTA POS-CADASTRO -->
+  <div class="modal-overlay modal-overlay-secundario" id="modal-pos-cadastro-overlay">
+    <div class="modal modal-confirmacao" id="modal-pos-cadastro">
+
+      <div class="modal-confirmacao-icone" style="background: rgba(232,84,94,.1)">
+        <i class="fa-solid fa-dollar-sign" style="color: var(--primary)"></i>
+      </div>
+
+      <div class="modal-confirmacao-titulo">Aluno cadastrado!</div>
+
+      <div class="modal-confirmacao-desc">
+        Deseja registrar o primeiro pagamento de
+        <strong id="pos-cadastro-nome"></strong> agora?
+      </div>
+
+      <div class="modal-confirmacao-acoes">
+        <button class="btn-modal-cancelar" id="btn-pos-cadastro-nao">
+          Agora não
+        </button>
+        <button class="btn-modal-salvar" id="btn-pos-cadastro-sim">
+          <i class="fa-solid fa-dollar-sign"></i> Registrar pagamento
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bcryptjs@2.4.3/dist/bcrypt.min.js"></script>
+  <script src="../js/api.js"></script>
+  <script src="../js/db.js"></script>
+  <script src="jsAluno.js"></script>
+
+</body>
+
+</html>

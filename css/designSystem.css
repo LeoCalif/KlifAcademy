@@ -1,0 +1,273 @@
+/* =====================================================
+   DESIGN SYSTEM — VARIÁVEIS GLOBAIS
+   ===================================================== */
+:root {
+  --primary:          #E8545E;
+  --primary-dark:     #972B32;
+  --primary-light:    rgba(232, 84, 94, 0.08);
+  --primary-hover:    #D63F49;
+
+  --bg:               #FAFBFD;
+  --surface:          rgba(255, 255, 255, 0.88);
+  --surface-2:        #F3F4F6;
+
+  --text:             #232224;
+  --text-2:           #5B6169;
+  --text-3:           #8F979F;
+
+  --border:           #E5E7EB;
+  --border-d:         #D1D5DB;
+
+  /* Status */
+  --ativo:            #059669;
+  --ativo-bg:         #ECFDF5;
+  --ativo-text:       #065F46;
+
+  --aguardando:       #C97A2B;
+  --aguardando-bg:    rgba(201, 122, 43, 0.08);
+  --aguardando-text:  #945314;
+
+  --ausente:          #972B32;
+  --ausente-bg:       rgba(151, 43, 50, 0.08);
+  --ausente-text:     #972B32;
+
+  --pausado:          #6C7888;
+  --pausado-bg:       rgba(108, 120, 136, 0.08);
+  --pausado-text:     #555E6B;
+
+  --inativo:          #8F979F;
+  --inativo-bg:       rgba(143, 151, 159, 0.08);
+  --inativo-text:     #5B6169;
+/* =====================================================
+   GRADIENTES
+==================================================== */
+
+--gradient-primary:
+linear-gradient(
+  135deg,
+  #E8545E 0%,
+  #972B32 100%
+);
+
+--gradient-primary-soft:
+linear-gradient(
+  135deg,
+  rgba(232, 84, 94, .12) 0%,
+  rgba(151, 43, 50, .04) 100%
+);
+
+--gradient-surface:
+linear-gradient(
+  180deg,
+  #FFFFFF 0%,
+  #F3F4F6 100%
+);
+
+--gradient-bg:
+linear-gradient(
+  180deg,
+  #F3F4F6 0%,
+  #FAFBFD 100%
+);
+
+--gradient-sidebar:
+linear-gradient(
+  180deg,
+  #232224 0%,
+  #1E2E55 100%
+);
+
+/* STATUS */
+
+--gradient-ativo:
+linear-gradient(
+  135deg,
+  #059669 0%,
+  #10B981 100%
+);
+
+--gradient-aguardando:
+linear-gradient(
+  135deg,
+  #C97A2B 0%,
+  #E89543 100%
+);
+
+--gradient-ausente:
+linear-gradient(
+  135deg,
+  #972B32 0%,
+  #E8545E 100%
+);
+
+--gradient-pausado:
+linear-gradient(
+  135deg,
+  #6C7888 0%,
+  #8F979F 100%
+);
+
+--gradient-inativo:
+linear-gradient(
+  135deg,
+  #8F979F 0%,
+  #AFB8C0 100%
+);
+
+  /* Espaçamentos */
+  --sp-1: 4px;  --sp-2: 8px;   --sp-3: 12px;
+  --sp-4: 16px; --sp-5: 20px;  --sp-6: 24px;
+  --sp-8: 32px; --sp-10: 40px; --sp-12: 48px;
+
+  /* Bordas */
+  --r-sm: 6px; --r-md: 10px; --r-lg: 14px; --r-pill: 999px;
+
+  /* Sidebar */
+  --sidebar-w: 230px;
+
+  /* Fontes */
+  --font: 'Plus Jakarta Sans', sans-serif;
+
+  /* Sombras */
+  --shadow-sm: 0 1px 3px rgba(15,25,35,.06), 0 1px 2px rgba(15,25,35,.04);
+  --shadow-md: 0 4px 16px rgba(15,25,35,.08), 0 2px 6px rgba(15,25,35,.04);
+}
+
+/* =====================================================
+   HEADER WIDGETS (CLOCK & PROFILE DROPDOWN)
+   ===================================================== */
+.header-right-widgets {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+}
+
+.clock-widget {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: var(--r-md);
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  color: #ffffff;
+  font-weight: 600;
+  box-shadow: var(--shadow-sm);
+  text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+}
+
+/* On standard light pages, clock widget can have slightly darker text or background for readability */
+body:not(:has(.painel-workspace)) .clock-widget,
+body:has(#tabela-alunos) .clock-widget,
+body:has(#tabela-planos) .clock-widget,
+body:has(#tabela-pagamentos) .clock-widget,
+body:has(.config-layout) .clock-widget {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  color: var(--text);
+  text-shadow: none;
+}
+
+body:not(:has(.painel-workspace)) .clock-widget i,
+body:has(#tabela-alunos) .clock-widget i,
+body:has(#tabela-planos) .clock-widget i,
+body:has(#tabela-pagamentos) .clock-widget i,
+body:has(.config-layout) .clock-widget i {
+  color: var(--text-2);
+}
+
+.clock-widget i {
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+#clock-time {
+  font-family: monospace;
+  font-size: 16px;
+  letter-spacing: 0.05em;
+}
+
+/* User profile avatar dropdown */
+.user-profile-menu {
+  position: relative;
+  cursor: pointer;
+}
+
+.user-avatar-placeholder {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.8);
+  box-shadow: var(--shadow-sm);
+  user-select: none;
+  transition: all 0.2s ease;
+}
+
+.user-profile-menu:hover .user-avatar-placeholder {
+  transform: scale(1.05);
+  box-shadow: var(--shadow-md);
+}
+
+.profile-dropdown {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 48px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-md);
+  width: 140px;
+  z-index: 1000;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+  padding: 4px 0;
+  animation: dropdownFadeIn 0.2s ease-out;
+}
+
+.profile-dropdown a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  color: var(--text-2);
+  font-size: 13px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.15s ease;
+}
+
+.profile-dropdown a:hover {
+  background: var(--surface-2);
+  color: var(--text);
+}
+
+.profile-dropdown a.btn-logout {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.profile-dropdown a.btn-logout:hover {
+  background: var(--primary-light);
+  color: var(--primary-hover);
+}
+
+@keyframes dropdownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

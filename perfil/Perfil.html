@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meu Perfil — Bem-Estar Fitness</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="../css/designSystem.css">
+  <link rel="stylesheet" href="../alunos/styleAluno.css">
+  <link rel="stylesheet" href="stylePerfil.css">
+</head>
+
+<body>
+
+  <!-- =====================================================
+     SIDEBAR
+     ===================================================== -->
+  <aside class="sidebar">
+
+    <div>
+      <div class="sidebar-header">
+        <div class="sidebar-logo-icon">
+          <img src="../Assets/logoAcademia.png" alt="Logo Academia" class="logoAcademia">
+        </div>
+        <div class="sidebar-logo-text">
+          <strong>Bem-Estar</strong>
+          <span>Fitness</span>
+        </div>
+      </div>
+
+      <!-- Nav: links principais -->
+      <nav class="sidebar-nav">
+        <p class="nav-label">Menu</p>
+        <a href="../painel/Painel.html">
+          <i class="fa-solid fa-chart-line"></i>
+          Painel
+        </a>
+        <a href="../alunos/Alunos.html">
+          <i class="fa-solid fa-users"></i>
+          Alunos
+          <span class="nav-badge">0</span>
+        </a>
+        <a href="../pagamentos/Pagamentos.html">
+          <i class="fa-solid fa-dollar-sign"></i>
+          Pagamentos
+        </a>
+        <a href="../planos/Planos.html">
+          <i class="fa-solid fa-clipboard-list"></i>
+          Planos
+        </a>
+        <a href="../config/config.html">
+          <i class="fa-solid fa-gear"></i>
+          Configurações
+        </a>
+      </nav>
+    </div>
+
+    <!-- Footer: status -->
+    <div class="sidebar-footer">
+      <p class="sidebar-footer-title">Dados</p>
+      <div class="sidebar-status">
+        <div class="status-dot-indicator"></div>
+        <span>Status: <strong>Atualizado</strong></span>
+      </div>
+      <!-- Botão Sair removido daqui e colocado no menu de perfil -->
+    </div>
+
+  </aside>
+
+  <!-- =====================================================
+     CONTEÚDO PRINCIPAL
+     ===================================================== -->
+  <main class="main-content">
+
+    <!-- Cabeçalho da página -->
+    <header class="page-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--sp-4);">
+      <div>
+        <h1>Meu Perfil</h1>
+        <p>Consulte e altere suas informações pessoais de acesso</p>
+      </div>
+      <!-- Widget de Relógio Glassmorphic + Perfil -->
+      <div class="header-right-widgets" style="display: flex; align-items: center; gap: var(--sp-3);">
+        <div class="clock-widget">
+          <i class="fa-regular fa-clock"></i>
+          <span id="clock-time">00:00:00</span>
+        </div>
+        <!-- Perfil do Usuário com Dropdown -->
+        <div class="user-profile-menu" style="position: relative; cursor: pointer;">
+          <div class="user-avatar-placeholder" style="width: 40px; height: 40px; border-radius: 50%; background: var(--primary); color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 16px; border: 2px solid rgba(255, 255, 255, 0.8); box-shadow: var(--shadow-sm); user-select: none;">C</div>
+          <div class="profile-dropdown" style="display: none; position: absolute; right: 0; top: 48px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-md); box-shadow: var(--shadow-md); width: 140px; z-index: 1000; overflow: hidden; backdrop-filter: blur(10px); padding: 4px 0;">
+            <a href="#" style="display: flex; align-items: center; gap: 8px; padding: 10px 16px; color: var(--text-2); font-size: 13px; text-decoration: none; font-weight: 500; transition: all 0.15s ease;">
+              <i class="fa-solid fa-user-gear"></i> Ver Perfil
+            </a>
+            <hr style="border: none; border-top: 1px solid var(--border); margin: 4px 0;">
+            <a href="#" class="btn-logout" style="display: flex; align-items: center; gap: 8px; padding: 10px 16px; color: var(--primary); font-size: 13px; text-decoration: none; font-weight: 600; transition: all 0.15s ease;">
+              <i class="fa-solid fa-right-from-bracket"></i> Sair
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Layout da Tela de Perfil -->
+    <section class="perfil-layout">
+
+      <!-- Cartão de Visão Geral do Perfil -->
+      <div class="perfil-card-info">
+        <div class="large-avatar-placeholder" id="perf-avatar-largo">C</div>
+        <h2 id="perf-nome-cabecalho">Calif (Admin)</h2>
+        <span class="user-level-badge" id="perf-badge-cargo">Administrador</span>
+        <p class="user-email-text" id="perf-email-cabecalho">calif.admin@bemestar.com</p>
+      </div>
+
+      <!-- Formulários de Edição -->
+      <div class="perfil-forms-container">
+        
+        <!-- Formulário 1: Dados Pessoais -->
+        <div class="perfil-section-form">
+          <h3>Dados de Acesso</h3>
+          <form id="form-perfil-dados">
+            <div class="campos-grid" style="margin-top: 12px;">
+              <div class="campo-grupo campo-largo">
+                <label for="perf-nome">Nome Completo</label>
+                <input type="text" id="perf-nome" required placeholder="Seu nome completo">
+              </div>
+              <div class="campo-grupo">
+                <label for="perf-email">E-mail</label>
+                <input type="email" id="perf-email" required placeholder="exemplo@email.com">
+              </div>
+              <div class="campo-grupo">
+                <label for="perf-nivel">Nível de Acesso (Perfil)</label>
+                <input type="text" id="perf-nivel" disabled style="background: var(--surface-2); font-weight: 600; color: var(--text-2);">
+              </div>
+            </div>
+            <div class="form-actions" style="margin-top: 20px; padding-top: 12px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end;">
+              <button type="submit" class="btn-novo-aluno">
+                <i class="fa-solid fa-floppy-disk"></i> Salvar Dados
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Formulário 2: Alterar Senha -->
+        <div class="perfil-section-form" style="margin-top: var(--sp-6);">
+          <h3>Alteração de Senha</h3>
+          <form id="form-perfil-senha">
+            <div class="campos-grid" style="margin-top: 12px;">
+              <div class="campo-grupo">
+                <label for="perf-senha-atual">Senha Atual</label>
+                <input type="password" id="perf-senha-atual" required placeholder="Digite sua senha atual">
+              </div>
+              <div class="campo-grupo">
+                <label for="perf-senha-nova">Nova Senha</label>
+                <input type="password" id="perf-senha-nova" required placeholder="Mínimo de 4 caracteres">
+              </div>
+              <div class="campo-grupo">
+                <label for="perf-senha-confirmar">Confirmar Nova Senha</label>
+                <input type="password" id="perf-senha-confirmar" required placeholder="Confirme a nova senha">
+              </div>
+            </div>
+            <div class="form-actions" style="margin-top: 20px; padding-top: 12px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end;">
+              <button type="submit" class="btn-novo-aluno" style="background: var(--aguardando);">
+                <i class="fa-solid fa-key"></i> Alterar Senha
+              </button>
+            </div>
+          </form>
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- TOAST DE NOTIFICAÇÃO -->
+  <div class="toast" id="toast">
+    <i class="fa-solid fa-circle-check" id="toast-icone"></i>
+    <span id="toast-mensagem">Perfil atualizado com sucesso!</span>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bcryptjs@2.4.3/dist/bcrypt.min.js"></script>
+  <script src="../js/api.js"></script>
+  <script src="../js/db.js"></script>
+  <script src="jsPerfil.js"></script>
+</body>
+
+</html>

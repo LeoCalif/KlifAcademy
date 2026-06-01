@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel — Bem-Estar Fitness</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="../css/designSystem.css">
+  <link rel="stylesheet" href="../alunos/styleAluno.css">
+  <link rel="stylesheet" href="stylePainel.css">
+</head>
+
+<body>
+
+  <!-- =====================================================
+     SIDEBAR
+     ===================================================== -->
+  <aside class="sidebar">
+
+    <!-- Header: logo + nome da academia -->
+    <div>
+      <div class="sidebar-header">
+        <div class="sidebar-logo-icon">
+          <img src="../Assets/logoAcademia.png" alt="Logo Bem-Estar Fitness" class="logoAcademia">
+        </div>
+        <div class="sidebar-logo-text">
+          <strong>Bem-Estar</strong>
+          <span>Fitness</span>
+        </div>
+      </div>
+
+      <!-- Nav: links principais -->
+      <nav class="sidebar-nav">
+        <p class="nav-label">Menu</p>
+        <a href="#" class="active">
+          <i class="fa-solid fa-chart-line"></i>
+          Painel
+        </a>
+        <a href="../alunos/Alunos.html">
+          <i class="fa-solid fa-users"></i>
+          Alunos
+          <span class="nav-badge">7</span>
+        </a>
+        <a href="../pagamentos/Pagamentos.html">
+          <i class="fa-solid fa-dollar-sign"></i>
+          Pagamentos
+        </a>
+        <a href="../planos/Planos.html">
+          <i class="fa-solid fa-clipboard-list"></i>
+          Planos
+        </a>
+        <a href="../config/config.html">
+          <i class="fa-solid fa-gear"></i>
+          Configurações
+        </a>
+      </nav>
+    </div>
+
+    <!-- Footer: status + botão sair -->
+    <div class="sidebar-footer">
+      <p class="sidebar-footer-title">Dados</p>
+
+      <div class="sidebar-status">
+        <div class="status-dot-indicator"></div>
+        <span>Status: <strong>Atualizado</strong></span>
+      </div>
+
+      <!-- Botão Sair removido daqui e colocado no menu de perfil -->
+    </div>
+
+  </aside>
+
+  <!-- =====================================================
+     CONTEÚDO PRINCIPAL
+     ===================================================== -->
+  <main class="main-content">
+
+    <!-- Cabeçalho da página (Saudação e Relógio Dinâmico) -->
+    <header class="page-header painel-header-box" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--sp-4);">
+      <div>
+        <h1 id="greeting-text">Olá, Calif!</h1>
+        <p><span id="clock-date">Sexta-feira, 29 de Maio de 2026</span></p>
+      </div>
+      <!-- Widget de Relógio Glassmorphic + Perfil -->
+      <div class="header-right-widgets" style="display: flex; align-items: center; gap: var(--sp-3);">
+        <div class="clock-widget">
+          <i class="fa-regular fa-clock"></i>
+          <span id="clock-time">00:00:00</span>
+        </div>
+        <!-- Perfil do Usuário com Dropdown -->
+        <div class="user-profile-menu" style="position: relative; cursor: pointer;">
+          <div class="user-avatar-placeholder" style="width: 40px; height: 40px; border-radius: 50%; background: var(--primary); color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 16px; border: 2px solid rgba(255, 255, 255, 0.8); box-shadow: var(--shadow-sm); user-select: none;">C</div>
+          <div class="profile-dropdown" style="display: none; position: absolute; right: 0; top: 48px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-md); box-shadow: var(--shadow-md); width: 140px; z-index: 1000; overflow: hidden; backdrop-filter: blur(10px); padding: 4px 0;">
+            <a href="../perfil/Perfil.html" style="display: flex; align-items: center; gap: 8px; padding: 10px 16px; color: var(--text-2); font-size: 13px; text-decoration: none; font-weight: 500; transition: all 0.15s ease;">
+              <i class="fa-solid fa-user-gear"></i> Ver Perfil
+            </a>
+            <hr style="border: none; border-top: 1px solid var(--border); margin: 4px 0;">
+            <a href="#" class="btn-logout" style="display: flex; align-items: center; gap: 8px; padding: 10px 16px; color: var(--primary); font-size: 13px; text-decoration: none; font-weight: 600; transition: all 0.15s ease;">
+              <i class="fa-solid fa-right-from-bracket"></i> Sair
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Cards Principais -->
+    <section class="status-cards">
+      <!-- Card 1: Presentes Hoje -->
+      <div class="summary-card card-ativos" id="card-link-presentes" style="cursor: pointer;">
+        <div class="summary-icon" style="background: var(--ativo-bg);">
+          <i class="fa-solid fa-user-check" style="color: var(--ativo);"></i>
+        </div>
+        <div class="summary-info">
+          <div class="summary-label">Presentes Hoje <i class="fa-solid fa-expand" style="font-size: 10px; margin-left: 2px; opacity: 0.6;"></i></div>
+          <div class="summary-value" id="count-presentes" style="color: var(--ativo);">0</div>
+        </div>
+      </div>
+
+      <!-- Card 2: Aguardando Pagamento (Redireciona com filtro) -->
+      <div class="summary-card card-aguardando" id="card-link-aguardando" style="cursor: pointer;">
+        <div class="summary-icon" style="background: var(--aguardando-bg);">
+          <i class="fa-solid fa-hourglass-half" style="color: var(--aguardando);"></i>
+        </div>
+        <div class="summary-info">
+          <div class="summary-label">Aguardando Pagamento <i class="fa-solid fa-arrow-up-right-from-square" style="font-size: 10px; margin-left: 2px; opacity: 0.6;"></i></div>
+          <div class="summary-value" id="count-aguardando" style="color: var(--aguardando);">0</div>
+        </div>
+      </div>
+
+      <!-- Card 3: Próximos Vencimentos -->
+      <div class="summary-card card-ausentes" id="card-link-vencimentos" style="cursor: pointer;">
+        <div class="summary-icon" style="background: var(--ausente-bg);">
+          <i class="fa-solid fa-calendar-day" style="color: var(--ausente);"></i>
+        </div>
+        <div class="summary-info">
+          <div class="summary-label">Próximos Vencimentos <i class="fa-solid fa-arrow-up-right-from-square" style="font-size: 10px; margin-left: 2px; opacity: 0.6;"></i></div>
+          <div class="summary-value" id="count-vencimentos" style="color: var(--ausente);">0</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Workspace do Painel -->
+    <section class="painel-workspace">
+      <!-- Lado Esquerdo: Barra Vertical de Ações -->
+      <div class="painel-sidebar-actions">
+        <div class="action-trigger-item" id="btn-open-catraca" style="cursor: pointer;">
+          <div class="circular-icon-btn btn-catraca">
+            <i class="fa-solid fa-address-card"></i>
+          </div>
+          <div class="action-trigger-info">
+            <h4>Acessos Catraca</h4>
+            <span>Monitoramento recente</span>
+          </div>
+        </div>
+
+        <div class="action-trigger-item" id="btn-open-atividades" style="cursor: pointer;">
+          <div class="circular-icon-btn btn-atividades">
+            <i class="fa-solid fa-list-check"></i>
+          </div>
+          <div class="action-trigger-info">
+            <h4>Atividades</h4>
+            <span>Log administrativo</span>
+          </div>
+        </div>
+
+        <div class="action-trigger-item" id="btn-open-vencimentos" style="cursor: pointer;">
+          <div class="circular-icon-btn btn-vencimentos">
+            <i class="fa-solid fa-calendar-days"></i>
+          </div>
+          <div class="action-trigger-info">
+            <h4>Vencimentos</h4>
+            <span>Controle mensal</span>
+          </div>
+        </div>
+
+        <div class="action-trigger-item" id="btn-open-aniversariantes" style="cursor: pointer;">
+          <div class="circular-icon-btn btn-aniversariantes">
+            <i class="fa-solid fa-cake-candles"></i>
+          </div>
+          <div class="action-trigger-info">
+            <h4>Aniversariantes</h4>
+            <span>Aniversários do mês</span>
+          </div>
+        </div>
+      </div>
+
+
+    </section>
+
+  </main>
+
+  <!-- MODAL DE LOTAÇÃO & FLUXO (Futura Catraca) -->
+  <div class="modal-overlay" id="modal-lotacao-overlay">
+    <div class="modal modal-pequeno" style="max-width: 440px;">
+      <div class="modal-header">
+        <div class="modal-titular">
+          <div class="modal-nome" style="font-size: 15px; margin-bottom: 2px;">Lotação & Fluxo da Academia</div>
+          <div class="modal-meta">
+            <span class="modal-vencimento">Informações em tempo real (Integração Futura)</span>
+          </div>
+        </div>
+        <div class="modal-header-actions">
+          <button class="btn-modal-fechar" id="btn-fechar-lotacao">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="modal-corpo" style="padding: var(--sp-5);">
+        <!-- Ocupação e Estatísticas -->
+        <div class="ocupacao-content" style="height: auto; padding: var(--sp-4) 0; display: flex; align-items: center; justify-content: space-around; gap: var(--sp-5);">
+          <!-- Anel de Progresso Circular -->
+          <div class="progress-ring-container">
+            <svg class="progress-ring" width="130" height="130">
+              <circle class="progress-ring__background" stroke="var(--border)" stroke-width="10" fill="transparent" r="52" cx="65" cy="65" />
+              <circle class="progress-ring__circle" id="occupancy-progress" stroke="var(--ativo)" stroke-width="10" fill="transparent" r="52" cx="65" cy="65" stroke-dasharray="326.72" stroke-dashoffset="326.72" />
+            </svg>
+            <div class="progress-ring-text">
+              <span id="current-occupancy-num">0</span>
+              <small>de 80</small>
+            </div>
+          </div>
+          
+          <!-- Estatísticas rápidas -->
+          <div class="ocupacao-stats">
+            <div class="stat-row">
+              <i class="fa-solid fa-clock-rotate-left"></i>
+              <span>Tempo médio: <strong>55 min</strong></span>
+            </div>
+            <div class="stat-row">
+              <i class="fa-solid fa-chart-simple"></i>
+              <span>Pico de Horário: <strong>19:00</strong></span>
+            </div>
+            <div class="stat-row">
+              <i class="fa-solid fa-users"></i>
+              <span>Fluxo Diário: <strong>Alto</strong></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: SIMULADOR DE CATRACA -->
+  <div class="modal-overlay" id="modal-catraca-overlay">
+    <div class="modal" style="max-width: 600px;">
+      <div class="modal-header">
+        <div class="modal-titular">
+          <div class="modal-nome" style="font-size: 15px; margin-bottom: 2px;">Movimentação da Catraca</div>
+          <div class="modal-meta">
+            <span class="modal-vencimento">Acessos recentes dos alunos na academia</span>
+          </div>
+        </div>
+        <div class="modal-header-actions">
+          <button class="btn-modal-fechar" id="btn-fechar-catraca">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+      </div>
+      <div class="modal-corpo" style="padding: 0;">
+        <div class="catraca-log-container" style="height: 300px;">
+          <div id="catraca-log-list">
+            <!-- Injetado via JS -->
+          </div>
+        </div>
+        <div style="padding: var(--sp-4) var(--sp-5); border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: var(--surface-2); border-bottom-left-radius: var(--r-lg); border-bottom-right-radius: var(--r-lg);">
+          <span style="font-size: 13px; color: var(--text-2); font-weight: 500;">Status do Leitor: <strong style="color: var(--ativo);">Online</strong></span>
+          <span class="table-count" id="count-status-treinando" style="font-size: 12px;">0 treinando</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: TIMELINE DE ATIVIDADES -->
+  <div class="modal-overlay" id="modal-atividades-overlay">
+    <div class="modal" style="max-width: 550px;">
+      <div class="modal-header">
+        <div class="modal-titular">
+          <div class="modal-nome" style="font-size: 15px; margin-bottom: 2px;">Últimas Atividades Administrativas</div>
+          <div class="modal-meta">
+            <span class="modal-vencimento">Histórico de operações na recepção</span>
+          </div>
+        </div>
+        <div class="modal-header-actions">
+          <button class="btn-modal-fechar" id="btn-fechar-atividades">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+      </div>
+      <div class="modal-corpo" style="padding: var(--sp-5); max-height: 400px; overflow-y: auto;">
+        <!-- Seletor de Filtro de Usuário -->
+        <div id="filtro-usuarios-container" style="display: none; margin-bottom: var(--sp-4); align-items: center; gap: var(--sp-2);">
+          <label for="filtro-operador" style="font-size: 13px; font-weight: 600; color: var(--text-2);">Filtrar por Operador:</label>
+          <select id="filtro-operador" class="campo-busca" style="padding: 6px 12px; font-size: 13px; border-radius: var(--r-md); border: 1px solid var(--border); background: var(--surface); color: var(--text-1); flex: 1;">
+            <option value="">Todos os Operadores</option>
+          </select>
+        </div>
+        <div class="timeline" id="timeline-atividades" style="margin-top: 0;">
+          <!-- Injetado via JS -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: PRÓXIMOS VENCIMENTOS -->
+  <div class="modal-overlay" id="modal-vencimentos-overlay">
+    <div class="modal" style="max-width: 550px;">
+      <div class="modal-header">
+        <div class="modal-titular">
+          <div class="modal-nome" style="font-size: 15px; margin-bottom: 2px;">Próximos Vencimentos (Mensais)</div>
+          <div class="modal-meta">
+            <span class="modal-vencimento">Listagem de matrículas a vencer nos próximos dias</span>
+          </div>
+        </div>
+        <div class="modal-header-actions">
+          <button class="btn-modal-fechar" id="btn-fechar-vencimentos">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+      </div>
+      <div class="modal-corpo" style="padding: 0;">
+        <div style="max-height: 350px; overflow-y: auto;">
+          <table class="tabela-painel-resumo">
+            <thead>
+              <tr>
+                <th>Aluno</th>
+                <th>Vencimento</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody id="lista-proximos-vencimentos">
+              <!-- Injetado via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: ANIVERSARIANTES DO MÊS -->
+  <div class="modal-overlay" id="modal-aniversariantes-overlay">
+    <div class="modal" style="max-width: 550px;">
+      <div class="modal-header">
+        <div class="modal-titular">
+          <div class="modal-nome" style="font-size: 15px; margin-bottom: 2px;">Aniversariantes do Mês</div>
+          <div class="modal-meta">
+            <span class="modal-vencimento">Alunos aniversariantes no mês de Maio</span>
+          </div>
+        </div>
+        <div class="modal-header-actions">
+          <button class="btn-modal-fechar" id="btn-fechar-aniversariantes">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+      </div>
+      <div class="modal-corpo" style="padding: 0;">
+        <div style="max-height: 350px; overflow-y: auto;">
+          <table class="tabela-painel-resumo">
+            <thead>
+              <tr>
+                <th>Aluno</th>
+                <th>Métrica</th>
+                <th>Dia</th>
+              </tr>
+            </thead>
+            <tbody id="lista-aniversariantes">
+              <!-- Injetado via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  </main>
+
+  <!-- Script da página -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bcryptjs@2.4.3/dist/bcrypt.min.js"></script>
+  <script src="../js/api.js"></script>
+  <script src="../js/db.js"></script>
+  <script src="jsPainel.js"></script>
+
+</body>
+
+</html>

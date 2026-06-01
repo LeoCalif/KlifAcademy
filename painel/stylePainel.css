@@ -501,3 +501,101 @@ body::before {
     margin-top: var(--sp-3);
   }
 }
+
+/* Banner de Alerta Premium Glassmorphic */
+.alert-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--sp-4) var(--sp-5);
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--r-lg);
+  margin-bottom: var(--sp-5);
+  box-shadow: var(--shadow-md);
+  animation: slideDown 0.3s ease-out;
+}
+
+.alert-content {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+}
+
+.alert-icon {
+  font-size: 26px;
+  color: #25d366; /* Verde do WhatsApp */
+  animation: pulse-green 2s infinite ease-in-out;
+}
+
+.alert-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.alert-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #ffffff;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+}
+
+.alert-desc {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.9);
+  margin-top: 2px;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.alert-action-btn {
+  background: #25d366;
+  color: #ffffff;
+  border: none;
+  border-radius: var(--r-md);
+  padding: 10px 18px;
+  font-size: 13.5px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+  transition: all 0.2s ease;
+}
+
+.alert-action-btn:hover {
+  background: #20ba59;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(37, 211, 102, 0.4);
+}
+
+.alert-action-btn:active {
+  transform: translateY(0);
+}
+
+/* Botão do WhatsApp na tabela */
+.btn-whatsapp-lembrete {
+  background: #25d366 !important;
+  color: white !important;
+  border: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-whatsapp-lembrete:hover {
+  background: #20ba59 !important;
+  transform: scale(1.1);
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse-green {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.1); opacity: 0.9; }
+  100% { transform: scale(1); opacity: 1; }
+}

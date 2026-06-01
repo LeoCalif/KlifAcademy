@@ -42,10 +42,23 @@ let dadosComprovanteAtivo = null;
 
 function formatarDataHora(dataISO) {
   if (!dataISO) return '—';
-  const [data, horaCompleta] = dataISO.split('T');
-  const [ano, mes, dia] = data.split('-');
-  const hora = horaCompleta ? horaCompleta.slice(0, 5) : '00:00';
-  return `${dia}/${mes}/${ano} às ${hora}`;
+  const date = new Date(dataISO);
+  if (isNaN(date.getTime())) return '—';
+  
+  const dia = String(date.getDate()).padStart(2, '0');
+  const mes = String(date.getMonth() + 1).padStart(2, '0');
+  const ano = date.getFullYear();
+  
+  const horas = String(date.getHours()).padStart(2, '0');
+  const minutos = String(date.getMinutes()).padStart(2, '0');
+  
+  return `${dia}/${mes}/${ano} às ${horas}:${minutos}`;
+}
+
+function formatarData(dataStr) {
+  if (!dataStr) return '—';
+  const [ano, mes, dia] = dataStr.split('T')[0].split('-');
+  return `${dia}/${mes}/${ano}`;
 }
 
 function getIconeForma(forma) {
@@ -305,6 +318,7 @@ async function abrirComprovante(pagamento) {
   document.getElementById('comp-valor').textContent = `R$ ${valorNum.toFixed(2).replace('.', ',')}`;
   document.getElementById('comp-forma').textContent = getFormaTexto(pagamento.forma);
   document.getElementById('comp-data').textContent = formatarDataHora(pagamento.data);
+  document.getElementById('comp-vencimento').textContent = formatarData(pagamento.novo_vencimento);
   document.getElementById('comp-operador').textContent = pagamento.operador;
   document.getElementById('comp-status').innerHTML = getStatusBadge(pagamento.status);
 
@@ -344,13 +358,24 @@ ${gymName}
 *Valor:* R$ ${valorNum.toFixed(2).replace('.', ',')}
 *Forma:* ${getFormaTexto(pagamento.forma)}
 *Data/Hora:* ${formatarDataHora(pagamento.data)}
+*Vencimento:* ${formatarData(pagamento.novo_vencimento)}
 *Operador:* ${pagamento.operador}
 *Status:* ${statusTexto}
 
 _Obrigado, Bons Treinos!_`;
 
   navigator.clipboard.writeText(texto).then(() => {
-    mostrarToast('Comprovante copiado! Envie no WhatsApp.');
+    const whatsapp = pagamento.aluno_whatsapp || (pagamento.alunos && (pagamento.alunos.whatsapp || pagamento.alunos.telefone)) || null;
+    if (whatsapp) {
+      let numeroLimpo = whatsapp.replace(/\D/g, '');
+      if (numeroLimpo.length >= 10 && numeroLimpo.length <= 11) {
+        numeroLimpo = '55' + numeroLimpo;
+      }
+      window.open(`https://api.whatsapp.com/send?phone=${numeroLimpo}&text=${encodeURIComponent(texto)}`, '_blank');
+      mostrarToast('Comprovante copiado e WhatsApp aberto!');
+    } else {
+      mostrarToast('Comprovante copiado! Aluno não possui WhatsApp cadastrado.');
+    }
   });
 }
 

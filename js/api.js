@@ -17,6 +17,114 @@ if (SUPABASE_URL === "SUA_SUPABASE_URL_AQUI" || SUPABASE_ANON_KEY === "SUA_SUPAB
   console.warn("CONFIGURAÇÃO NECESSÁRIA: Insira a URL e Chave Anon do seu projeto Supabase no início do arquivo 'Criando telas originais/api.js' para que o sistema funcione.");
 }
 
+// Função para atualizar automaticamente os status dos alunos com base no vencimento ou data de matrícula
+async function atualizarStatusAutomatico(alunos, activeAcademiaId, currentUserId) {
+  if (!alunos || alunos.length === 0) return;
+
+  const hojeStr = new Date().toLocaleDateString('en-CA'); // Formato YYYY-MM-DD local
+  const hoje = new Date(hojeStr + "T12:00:00");
+
+  const updates = [];
+
+  for (const aluno of alunos) {
+    // Alunos com status manual 'pausa' não devem ter o status alterado automaticamente
+    if (aluno.status === 'pausa') {
+      continue;
+    }
+
+    let statusCalculado = aluno.status;
+
+    if (aluno.vencimento) {
+      const vencDate = new Date(aluno.vencimento + "T12:00:00");
+      const diffTime = hoje - vencDate;
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); // Dias vencido (positivo se vencido)
+
+      if (diffDays <= 0) {
+        statusCalculado = 'ativo';
+      } else if (diffDays <= 7) {
+        statusCalculado = 'aguardando'; // Venceu e está há no máximo 7 dias sem pagar
+      } else if (diffDays <= 60) {
+        statusCalculado = 'ausente';    // Entre 8 e 60 dias sem pagar
+      } else {
+        statusCalculado = 'inativo';    // Mais de 60 dias sem pagar/plano ativo
+      }
+    } else {
+      // Se não tem vencimento (cadastro novo sem plano ou resetado)
+      if (aluno.data_matricula) {
+        const matDate = new Date(aluno.data_matricula + "T12:00:00");
+        const diffTime = hoje - matDate;
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+        if (diffDays > 60) {
+          statusCalculado = 'inativo';
+        } else if (diffDays > 7) {
+          statusCalculado = 'ausente';
+        } else {
+          // Nos primeiros 7 dias de matrícula sem plano cadastrado, podemos mantê-lo ativo
+          if (aluno.status !== 'ativo' && aluno.status !== 'aguardando') {
+            statusCalculado = 'ativo';
+          }
+        }
+      } else {
+        // Sem vencimento e sem matrícula
+        if (aluno.status !== 'ativo' && aluno.status !== 'aguardando' && aluno.status !== 'inativo' && aluno.status !== 'ausente') {
+          statusCalculado = 'ativo';
+        }
+      }
+    }
+
+    // Se o status calculado mudou, atualiza
+    if (aluno.status !== statusCalculado) {
+      updates.push({
+        aluno,
+        statusAnterior: aluno.status,
+        statusNovo: statusCalculado
+      });
+    }
+  }
+
+  if (updates.length > 0) {
+    for (const item of updates) {
+      const { aluno, statusAnterior, statusNovo } = item;
+
+      // Atualiza o banco de dados
+      const { error: updateError } = await supabaseClient
+        .from("alunos")
+        .update({ status: statusNovo })
+        .eq("id", aluno.id)
+        .eq("academia_id", activeAcademiaId);
+
+      if (!updateError) {
+        // Registra no histórico do aluno
+        let desc = "";
+        if (statusNovo === "inativo") {
+          desc = "Matrícula inativada automaticamente por mais de 60 dias sem plano ativo.";
+        } else if (statusNovo === "ausente") {
+          desc = "Alterado automaticamente para Ausente por atraso superior a 7 dias.";
+        } else if (statusNovo === "aguardando") {
+          desc = "Alterado automaticamente para Aguardando Pagamento por vencimento do plano.";
+        } else if (statusNovo === "ativo") {
+          desc = "Alterado automaticamente para Ativo.";
+        }
+
+        await supabaseClient.from("historico_aluno").insert({
+          aluno_id: aluno.id,
+          usuario_id: currentUserId || null,
+          academia_id: activeAcademiaId,
+          tipo_evento: "sistema_status",
+          status_anterior: statusAnterior,
+          status_novo: statusNovo,
+          descricao: desc
+        });
+
+        // Atualiza a referência em memória
+        aluno.status = statusNovo;
+      }
+    }
+  }
+}
+
+
 window.api = {
   getHeaders: function () {
     const token = localStorage.getItem("wpa_token");
@@ -388,17 +496,17 @@ window.api = {
           const nomeFilter = url.searchParams.get("nome");
           const cpfFilter = url.searchParams.get("cpf");
 
+          // Buscamos todos os alunos da academia para sincronizar os status de forma completa no banco
           let query = supabaseClient.from("alunos").select("*, planos(nome)");
           if (activeAcademiaId) {
             query = query.eq("academia_id", activeAcademiaId);
           }
 
-          if (statusFilter) query = query.eq("status", statusFilter);
-          if (nomeFilter) query = query.ilike("nome", `%${nomeFilter}%`);
-          if (cpfFilter) query = query.eq("cpf", cpfFilter);
-
           const { data: alunos, error } = await query;
           if (error) throw new Error("Erro ao buscar alunos: " + error.message);
+
+          // Atualiza os status automaticamente com base nas regras (vencimento, dias de atraso)
+          await atualizarStatusAutomatico(alunos, activeAcademiaId, currentUserId);
 
           // Busca todos os pagamentos confirmados para calcular total_pago localmente (evita N+1 queries no Postgres)
           let paymentQuery = supabaseClient.from("pagamentos").select("aluno_id, valor").eq("status", "confirmado");
@@ -414,8 +522,8 @@ window.api = {
             });
           }
 
-          // Mapeia os dados do Postgres para o formato que o frontend espera
-          return alunos.map(aluno => {
+          // Mapeia e filtra os dados localmente
+          const mapeados = alunos.map(aluno => {
             let diasPausados = 0;
             if (aluno.observacoes && aluno.observacoes.includes("[Dias Pausados: ")) {
               try {
@@ -431,6 +539,21 @@ window.api = {
               dias_pausados: diasPausados
             };
           });
+
+          // Aplica os filtros em memória
+          let resultado = mapeados;
+          if (nomeFilter) {
+            const term = nomeFilter.toLowerCase();
+            resultado = resultado.filter(aluno => aluno.nome && aluno.nome.toLowerCase().includes(term));
+          }
+          if (cpfFilter) {
+            resultado = resultado.filter(aluno => aluno.cpf === cpfFilter);
+          }
+          if (statusFilter) {
+            resultado = resultado.filter(aluno => aluno.status === statusFilter);
+          }
+
+          return resultado;
         }
 
         else if (methodUpper === "POST") {
@@ -664,7 +787,7 @@ window.api = {
       // 4. ROTAS DE PAGAMENTOS
       else if (path === "/pagamentos") {
         if (methodUpper === "GET") {
-          let query = supabaseClient.from("pagamentos").select("*, alunos(nome), planos(nome), usuarios(nome)");
+          let query = supabaseClient.from("pagamentos").select("*, alunos(nome, whatsapp, telefone), planos(nome), usuarios(nome)");
           if (activeAcademiaId) {
             query = query.eq("academia_id", activeAcademiaId);
           }

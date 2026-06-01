@@ -160,6 +160,7 @@
       return data.map(p => ({
         ...p,
         aluno: p.aluno_nome,
+        aluno_whatsapp: p.alunos?.whatsapp || p.alunos?.telefone || null,
         plano: p.plano_nome,
         forma: p.forma_pagamento,
         data: p.criado_em, // Mapeia criado_em -> data

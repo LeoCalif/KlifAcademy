@@ -156,6 +156,7 @@ function formatarDataBR(dataISO) {
   return `${dia}/${mes}/${ano}`;
 }
 
+// Função para obter a diferença de dias até o vencimento
 function inicializarListasRapidas() {
   const listVenc = document.getElementById('lista-proximos-vencimentos');
   const listAniv = document.getElementById('lista-aniversariantes');
@@ -163,12 +164,30 @@ function inicializarListasRapidas() {
   listVenc.innerHTML = '';
   listAniv.innerHTML = '';
 
-  // 1. Próximos Vencimentos (ordena vencimento ativo de forma ascendente)
+  const hoje = new Date(HOJE_REF);
+  hoje.setHours(0, 0, 0, 0);
+  const diaSemana = hoje.getDay();
+  
+  // Começo da semana vigente (Domingo)
+  const inicioSemana = new Date(hoje);
+  inicioSemana.setDate(hoje.getDate() - diaSemana);
+  inicioSemana.setHours(0, 0, 0, 0);
+  
+  // Fim da semana vigente (Sábado)
+  const fimSemana = new Date(inicioSemana);
+  fimSemana.setDate(inicioSemana.getDate() + 6);
+  fimSemana.setHours(23, 59, 59, 999);
+
+  // 1. Próximos Vencimentos da Semana Vigente (ordena vencimento ativo de forma ascendente)
   const ativosComVenc = alunos
-    .filter(a => a.vencimento !== null && a.status === 'ativo')
+    .filter(a => {
+      if (a.vencimento === null || a.status !== 'ativo') return false;
+      const vencDate = new Date(a.vencimento + 'T12:00:00');
+      return vencDate >= inicioSemana && vencDate <= fimSemana;
+    })
     .sort((a, b) => new Date(a.vencimento) - new Date(b.vencimento));
 
-  ativosComVenc.slice(0, 3).forEach(aluno => {
+  ativosComVenc.forEach(aluno => {
     const tr = document.createElement('tr');
     const hojeStr = HOJE_REF.toISOString().split('T')[0];
     const dataTexto = aluno.vencimento === hojeStr ? '<strong>Hoje</strong>' : formatarDataBR(aluno.vencimento);

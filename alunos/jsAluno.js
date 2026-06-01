@@ -41,7 +41,7 @@ let alunos = [];
 
 function calcularDias(dataISO) {
   if (!dataISO) return null
-  const vencimento = new Date(dataISO + 'T12:00:00')
+  const vencimento = new Date(dataISO + 'T00:00:00')
   const hoje = new Date()
   hoje.setHours(0, 0, 0, 0)
   return Math.round((vencimento - hoje) / (1000 * 60 * 60 * 24))
@@ -49,8 +49,23 @@ function calcularDias(dataISO) {
 
 function formatarData(dataISO) {
   if (!dataISO) return '—'
-  const [ano, mes, dia] = dataISO.split('-')
+  const [ano, mes, dia] = dataISO.split('T')[0].split('-')
   return `${dia}/${mes}/${ano}`
+}
+
+function formatarDataHora(dataISO) {
+  if (!dataISO) return '—';
+  const date = new Date(dataISO);
+  if (isNaN(date.getTime())) return '—';
+  
+  const dia = String(date.getDate()).padStart(2, '0');
+  const mes = String(date.getMonth() + 1).padStart(2, '0');
+  const ano = date.getFullYear();
+  
+  const horas = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+  
+  return `${dia}/${mes}/${ano} às ${horas}:${minutes}`;
 }
 
 function getInicial(nome) {
@@ -561,7 +576,18 @@ function recalcularVencimento() {
   const option  = pagPlano.options[pagPlano.selectedIndex]
   const dias    = parseInt(option.dataset.dias)
   if (!dataVal || !dias) { pagNovoVencimento.textContent = '—'; return }
-  const dataBase = new Date(dataVal + 'T12:00:00')
+  
+  let dataBase = new Date(dataVal + 'T12:00:00')
+  if (alunoAtualIndex !== null) {
+    const aluno = alunos[alunoAtualIndex]
+    if (aluno && aluno.vencimento) {
+      const dataVenc = new Date(aluno.vencimento + 'T12:00:00')
+      if (dataVenc > dataBase) {
+        dataBase = dataVenc
+      }
+    }
+  }
+  
   dataBase.setDate(dataBase.getDate() + dias)
   pagNovoVencimento.textContent = formatarData(dataBase.toISOString().split('T')[0])
 }
@@ -621,7 +647,13 @@ btnConfirmarPagamento.addEventListener('click', async function() {
   const option = pagPlano.options[pagPlano.selectedIndex]
   const dias   = parseInt(option.dataset.dias)
 
-  const dataBase = new Date(pagData.value + 'T12:00:00')
+  let dataBase = new Date(pagData.value + 'T12:00:00')
+  if (aluno && aluno.vencimento) {
+    const dataVenc = new Date(aluno.vencimento + 'T12:00:00')
+    if (dataVenc > dataBase) {
+      dataBase = dataVenc
+    }
+  }
   dataBase.setDate(dataBase.getDate() + dias)
   const novoVencISO = dataBase.toISOString().split('T')[0]
 
@@ -643,13 +675,20 @@ btnConfirmarPagamento.addEventListener('click', async function() {
     atualizarCards()
     fecharTodosModais()
     mostrarToast('Pagamento registrado com sucesso!')
+
+    const loggedInUserStr = localStorage.getItem("wpa_usuario_logado")
+    const currentUser = loggedInUserStr ? JSON.parse(loggedInUserStr) : null
+    const operadorNome = currentUser ? currentUser.nome : "Sistema"
+
     setTimeout(() => abrirComprovante({
       aluno_nome: aluno.nome,
+      aluno_whatsapp: aluno.whatsapp || aluno.telefone || null,
       plano: pagPlano.value,
       valor: parseFloat(pagValor.value),
       forma_pagamento: pagForma.value,
-      data_pagamento: pagData.value,
-      novo_vencimento: novoVencISO
+      data_pagamento: new Date().toISOString(),
+      novo_vencimento: novoVencISO,
+      operador: operadorNome
     }), 400)
   } catch (err) {
     console.error(err);
@@ -685,7 +724,7 @@ async function abrirComprovante(pagamento) {
   dadosComprovante = pagamento
   const formaMap = {
     pix: 'Pix', dinheiro: 'Dinheiro',
-    debito: 'Cartao de Debito', credito: 'Cartao de Credito'
+    debito: 'Cartão de Débito', credito: 'Cartão de Crédito'
   }
 
   // Carrega configurações dinâmicas da academia
@@ -720,8 +759,10 @@ async function abrirComprovante(pagamento) {
   document.getElementById('comp-plano').textContent      = pagamento.plano
   document.getElementById('comp-valor').textContent      = `R$ ${pagamento.valor.toFixed(2).replace('.', ',')}`
   document.getElementById('comp-forma').textContent      = formaMap[pagamento.forma_pagamento] || pagamento.forma_pagamento
-  document.getElementById('comp-data').textContent       = formatarData(pagamento.data_pagamento)
+  document.getElementById('comp-data').textContent       = formatarDataHora(pagamento.data_pagamento)
   document.getElementById('comp-vencimento').textContent = formatarData(pagamento.novo_vencimento)
+  document.getElementById('comp-operador').textContent   = pagamento.operador || 'Sistema'
+  document.getElementById('comp-status').innerHTML       = `<span class="status-badge status-ativo"><span class="status-dot"></span> Confirmado</span>`
   modalComprovanteOverlay.classList.add('aberto')
   document.body.style.overflow = 'hidden'
 }
@@ -739,7 +780,7 @@ modalComprovanteOverlay.addEventListener('click', function(e) {
 btnCopiarWhatsapp.addEventListener('click', async function() {
   const formaMap = {
     pix: 'Pix', dinheiro: 'Dinheiro',
-    debito: 'Cartao de Debito', credito: 'Cartao de Credito'
+    debito: 'Cartão de Débito', credito: 'Cartão de Crédito'
   }
   
   let config = null;
@@ -749,22 +790,36 @@ btnCopiarWhatsapp.addEventListener('click', async function() {
     console.error(e);
   }
   const gymName = (config && config.nomeAcademia) ? config.nomeAcademia : 'Bem-Estar Fitness'
+  const statusTexto = "CONFIRMADO"
+  const valorNum = parseFloat(dadosComprovante.valor || 0)
 
   const texto =
-`*Comprovante de Pagamento*
+`*Comprovante de Lançamento*
 ${gymName}
 
 *Aluno:* ${dadosComprovante.aluno_nome}
 *Plano:* ${dadosComprovante.plano}
-*Valor:* R$ ${dadosComprovante.valor.toFixed(2).replace('.', ',')}
-*Forma:* ${formaMap[dadosComprovante.forma_pagamento]}
-*Data:* ${formatarData(dadosComprovante.data_pagamento)}
-*Proximo vencimento:* ${formatarData(dadosComprovante.novo_vencimento)}
+*Valor:* R$ ${valorNum.toFixed(2).replace('.', ',')}
+*Forma:* ${formaMap[dadosComprovante.forma_pagamento] || dadosComprovante.forma_pagamento}
+*Data/Hora:* ${formatarDataHora(dadosComprovante.data_pagamento)}
+*Vencimento:* ${formatarData(dadosComprovante.novo_vencimento)}
+*Operador:* ${dadosComprovante.operador || 'Sistema'}
+*Status:* ${statusTexto}
 
-_${gymName} agradece!_`
+_Obrigado, Bons Treinos!_`
 
   navigator.clipboard.writeText(texto).then(() => {
-    mostrarToast('Texto copiado! Cole no WhatsApp.')
+    const whatsapp = dadosComprovante.aluno_whatsapp;
+    if (whatsapp) {
+      let numeroLimpo = whatsapp.replace(/\D/g, '');
+      if (numeroLimpo.length >= 10 && numeroLimpo.length <= 11) {
+        numeroLimpo = '55' + numeroLimpo;
+      }
+      window.open(`https://api.whatsapp.com/send?phone=${numeroLimpo}&text=${encodeURIComponent(texto)}`, '_blank');
+      mostrarToast('Texto copiado e WhatsApp aberto!');
+    } else {
+      mostrarToast('Texto copiado! Aluno não possui WhatsApp cadastrado.');
+    }
   })
 })
 
@@ -961,7 +1016,12 @@ function aplicarFiltros() {
   tbody.innerHTML = '';
 
   const busca = inputBusca.value.toLowerCase().trim();
-  const hojeStrISO = '2026-05-29';
+  
+  const hoje = new Date();
+  const ano = hoje.getFullYear();
+  const mes = String(hoje.getMonth() + 1).padStart(2, '0');
+  const dia = String(hoje.getDate()).padStart(2, '0');
+  const hojeStrISO = `${ano}-${mes}-${dia}`;
   const urlParams = new URLSearchParams(window.location.search);
   const planoParam = urlParams.get('planoNome');
 
@@ -1246,6 +1306,21 @@ async function init() {
     await popularPlanosSelects();
     atualizarCards();
     inicializarOrdenacao();
+    
+    // Parse URL parameter 'filter' to initialize active filter
+    const urlParams = new URLSearchParams(window.location.search);
+    const filterParam = urlParams.get('filter');
+    if (filterParam) {
+      filtroAtivo = filterParam;
+      filterBtns.forEach(btn => {
+        if (btn.dataset.filter === filterParam) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+    }
+    
     aplicarFiltros();
   } catch (err) {
     console.error("Erro na inicialização:", err);

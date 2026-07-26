@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
+  const api = window.api;
   const slider = document.querySelector(".login-slider");
   const loginContainer = document.querySelector(".login-container");
 
@@ -18,7 +19,11 @@ document.addEventListener("DOMContentLoaded", () => {
     // Atualiza subtítulo com base no formulário ativo
     if (!subtitleText) return;
 
-    const activeTenant = JSON.parse(localStorage.getItem("wpa_tenant_ativo"));
+    let activeTenant = null;
+    try {
+      const t = localStorage.getItem("wpa_tenant_ativo");
+      if (t) activeTenant = JSON.parse(t);
+    } catch (e) {}
     const nomeAcademia = activeTenant ? activeTenant.nome : "Klif-Academy";
 
     if (formIndex === 0) {
@@ -59,7 +64,11 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   // Inicializa o portal checando se já possui tenant ativo
-  const activeTenant = JSON.parse(localStorage.getItem("wpa_tenant_ativo"));
+  let activeTenant = null;
+  try {
+    const t = localStorage.getItem("wpa_tenant_ativo");
+    if (t) activeTenant = JSON.parse(t);
+  } catch (e) {}
   aplicarBrandingAcademia(activeTenant);
 
   // --- FORMULÁRIO DE SELEÇÃO DE ACADEMIA ---
@@ -189,8 +198,8 @@ document.addEventListener("DOMContentLoaded", () => {
         localStorage.setItem("wpa_usuario_logado", JSON.stringify(data.user));
 
         setTimeout(() => {
-          window.location.replace("painel/Painel.html");
-        }, 1000);
+          window.location.href = "painel/Painel.html";
+        }, 400);
       })
       .catch((err) => {
         submitBtn.classList.remove("loading");

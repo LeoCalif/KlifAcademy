@@ -56,10 +56,14 @@ function mostrarToast(mensagem, tipo = 'success') {
 // =====================================================
 
 function carregarDadosPerfil() {
-  const user = JSON.parse(localStorage.getItem('wpa_usuario_logado'));
+  let user = null;
+  try {
+    const u = localStorage.getItem('wpa_usuario_logado');
+    if (u) user = JSON.parse(u);
+  } catch (e) {}
   if (!user) {
     // Redireciona para o login caso não tenha sessão ativa
-    window.location.href = '../Index.html';
+    window.location.href = '../index.html';
     return;
   }
 
@@ -78,12 +82,14 @@ function carregarDadosPerfil() {
   // Renderiza a badge do nível de acesso correspondente
   const badgeCargo = document.getElementById('perf-badge-cargo');
   if (badgeCargo) {
-    badgeCargo.textContent = user.nivel;
+    const userRoleStr = user.nivel || user.perfil || 'Administrador';
+    const roleLower = userRoleStr.toLowerCase();
+    badgeCargo.textContent = roleLower.includes('admin') ? 'Administrador' : userRoleStr;
     badgeCargo.className = 'user-level-badge'; // Reseta classes antigas
     
-    if (user.nivel === 'Administrador') {
+    if (roleLower.includes('admin')) {
       badgeCargo.classList.add('badge-administrador');
-    } else if (user.nivel === 'Gerente Geral') {
+    } else if (roleLower.includes('gerente')) {
       badgeCargo.classList.add('badge-gerente');
     } else {
       badgeCargo.classList.add('badge-secretaria');
@@ -96,7 +102,11 @@ function carregarDadosPerfil() {
 // =====================================================
 
 async function salvarDadosPerfil() {
-  const user = JSON.parse(localStorage.getItem('wpa_usuario_logado'));
+  let user = null;
+  try {
+    const u = localStorage.getItem('wpa_usuario_logado');
+    if (u) user = JSON.parse(u);
+  } catch (e) {}
   if (!user) return;
 
   const novoNome = document.getElementById('perf-nome').value.trim();

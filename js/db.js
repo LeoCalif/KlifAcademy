@@ -6,7 +6,7 @@
   // Verifica se o usuário está autenticado nas páginas restritas (subpastas contendo /Tela)
   const token = localStorage.getItem('wpa_token');
   const user = localStorage.getItem('wpa_usuario_logado');
-  const isLoginPage = !['/alunos/', '/painel/', '/planos/', '/pagamentos/', '/config/', '/perfil/'].some(folder => window.location.pathname.includes(folder));
+  const isLoginPage = !['alunos', 'painel', 'planos', 'pagamentos', 'config', 'perfil'].some(folder => window.location.pathname.toLowerCase().includes(folder));
   
   console.log("Checagem de Autenticação (db.js):", {
     token: token ? "Presente" : "Ausente",
@@ -21,8 +21,15 @@
     localStorage.removeItem('wpa_token');
     localStorage.removeItem('wpa_usuario_logado');
     
-    // Redireciona para o Index.html no diretório pai usando caminho relativo
-    window.location.replace("../Index.html");
+    // Redireciona para o index.html no diretório pai usando caminho relativo
+    window.location.replace("../index.html");
+    return;
+  }
+
+  // Se o usuário já possui sessão ativa e está na tela de login, redireciona direto para o Painel
+  if (token && user && isLoginPage) {
+    console.log("Usuário já autenticado. Redirecionando para o painel...");
+    window.location.href = "painel/Painel.html";
     return;
   }
 
@@ -274,7 +281,7 @@
       const logoImg = document.querySelector('.sidebar-logo-icon img');
       if (logoImg && config.logo) {
         let logoPath = config.logo;
-        const isRoot = !['/alunos/', '/painel/', '/planos/', '/pagamentos/', '/config/', '/perfil/'].some(folder => window.location.pathname.includes(folder));
+        const isRoot = !['alunos', 'painel', 'planos', 'pagamentos', 'config', 'perfil'].some(folder => window.location.pathname.toLowerCase().includes(folder));
         if (isRoot && logoPath.startsWith('../')) {
           logoPath = logoPath.substring(3);
         } else if (!isRoot && !logoPath.startsWith('../') && !logoPath.startsWith('http') && !logoPath.startsWith('data:')) {
@@ -345,7 +352,11 @@
           } else if (horaNum >= 18 || horaNum < 5) {
             saudacao = 'Boa noite';
           }
-          const userObj = JSON.parse(localStorage.getItem('wpa_usuario_logado'));
+          let userObj = null;
+          try {
+            const u = localStorage.getItem('wpa_usuario_logado');
+            if (u) userObj = JSON.parse(u);
+          } catch (e) {}
           const nomeExibicao = userObj ? userObj.nome.split(' ')[0] : 'Calif';
           greetingText.innerHTML = `${saudacao}, <strong>${nomeExibicao}</strong>!`;
         }
@@ -361,7 +372,11 @@
       const dropdown = profileMenu.querySelector('.profile-dropdown');
       
       // Carrega informações da sessão ativa
-      const userObj = JSON.parse(localStorage.getItem('wpa_usuario_logado'));
+      let userObj = null;
+      try {
+        const u = localStorage.getItem('wpa_usuario_logado');
+        if (u) userObj = JSON.parse(u);
+      } catch (e) {}
       if (userObj) {
         const avatarPlaceholder = profileMenu.querySelector('.user-avatar-placeholder');
         if (avatarPlaceholder) {
@@ -385,8 +400,8 @@
           e.preventDefault();
           localStorage.removeItem('wpa_token');
           localStorage.removeItem('wpa_usuario_logado');
-          const isRoot = !['/alunos/', '/painel/', '/planos/', '/pagamentos/', '/config/', '/perfil/'].some(folder => window.location.pathname.includes(folder));
-          window.location.href = isRoot ? 'Index.html' : '../Index.html';
+          const isRoot = !['alunos', 'painel', 'planos', 'pagamentos', 'config', 'perfil'].some(folder => window.location.pathname.toLowerCase().includes(folder));
+          window.location.href = isRoot ? 'index.html' : '../index.html';
         });
       }
     }

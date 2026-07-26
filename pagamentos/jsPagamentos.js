@@ -391,7 +391,7 @@ btnImprimir.addEventListener('click', function() {
 
 // Toast
 function mostrarToast(mensagem) {
-  toastMensagem.textContent = message = mensagem;
+  toastMensagem.textContent = mensagem;
   toast.classList.add('visivel');
   setTimeout(() => toast.classList.remove('visivel'), 3500);
 }

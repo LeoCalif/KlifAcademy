@@ -3,10 +3,17 @@
 // =====================================================
 
 document.addEventListener('DOMContentLoaded', async () => {
-  const loggedUser = JSON.parse(localStorage.getItem('wpa_usuario_logado'));
+  let loggedUser = null;
+  try {
+    const u = localStorage.getItem('wpa_usuario_logado');
+    if (u) loggedUser = JSON.parse(u);
+  } catch (e) {}
+
+  const userRole = ((loggedUser && (loggedUser.nivel || loggedUser.perfil)) || '').toLowerCase();
+  const isAdmin = userRole === 'administrador' || userRole === 'admin';
 
   // Ocultar e remover a aba de Segurança e Auditoria caso o usuário não seja Administrador
-  if (loggedUser && loggedUser.nivel !== 'Administrador') {
+  if (loggedUser && !isAdmin) {
     const btnSeguranca = document.querySelector('.tab-nav-btn[data-target="tab-seguranca"]');
     if (btnSeguranca) {
       btnSeguranca.style.display = 'none';
@@ -39,7 +46,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   carregarSessoes();
 
   // Se for administrador, carrega as solicitações de acesso pendentes e gerenciamento de operadores
-  if (loggedUser && loggedUser.nivel === 'Administrador') {
+  if (loggedUser && isAdmin) {
     const sectionSolicitacoes = document.getElementById('section-solicitacoes');
     if (sectionSolicitacoes) {
       sectionSolicitacoes.style.display = 'block';
@@ -146,7 +153,7 @@ document.getElementById('form-config-geral').addEventListener('submit', async fu
     const logoImg = document.querySelector('.sidebar-logo-icon img');
     if (logoImg && config.logo) {
       let logoPath = config.logo;
-      const isRoot = !['/alunos/', '/painel/', '/planos/', '/pagamentos/', '/config/', '/perfil/'].some(folder => window.location.pathname.includes(folder));
+      const isRoot = !['alunos', 'painel', 'planos', 'pagamentos', 'config', 'perfil'].some(folder => window.location.pathname.toLowerCase().includes(folder));
       if (isRoot && logoPath.startsWith('../')) {
         logoPath = logoPath.substring(3);
       } else if (!isRoot && !logoPath.startsWith('../') && !logoPath.startsWith('http') && !logoPath.startsWith('data:')) {

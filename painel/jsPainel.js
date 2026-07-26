@@ -74,7 +74,7 @@ function inicializarCatracaELotacao() {
     const isTreinando = log.status === 'treinando';
     if (isTreinando) treinandoCount++;
 
-    const avatarChar = log.nome.charAt(0).toUpperCase();
+    const avatarChar = (log.nome || 'Aluno').charAt(0).toUpperCase();
     const badgeClass = isTreinando ? 'status-ativo' : 'status-inativo';
     const badgeText = isTreinando ? 'Treinando' : 'Saiu';
     const horaTexto = isTreinando ? `Entrou às ${log.horaEntrada}` : `Entrou às ${log.horaEntrada} · Saiu às ${log.horaSaida}`;
@@ -85,7 +85,7 @@ function inicializarCatracaELotacao() {
       <div class="catraca-log-aluno">
         <div class="catraca-avatar">${avatarChar}</div>
         <div>
-          <div class="catraca-info-nome">${log.nome}</div>
+          <div class="catraca-info-nome">${log.nome || 'Aluno'}</div>
           <div class="catraca-info-hora">${horaTexto}</div>
         </div>
       </div>
@@ -350,7 +350,11 @@ async function atualizarLogsAuditoria(usuarioId = null) {
 }
 
 async function inicializarFiltroOperadores() {
-  const user = JSON.parse(localStorage.getItem('wpa_usuario_logado'));
+  let user = null;
+  try {
+    const u = localStorage.getItem('wpa_usuario_logado');
+    if (u) user = JSON.parse(u);
+  } catch (e) {}
   if (!user) return;
 
   const containerFiltro = document.getElementById('filtro-usuarios-container');
@@ -358,8 +362,8 @@ async function inicializarFiltroOperadores() {
 
   if (!containerFiltro || !selectOperador) return;
 
-  // Se for "Gerente Geral" ou "Administrador", mostra o filtro
-  if (user.nivel === 'Gerente Geral' || user.nivel === 'Administrador') {
+  const role = ((user.nivel || user.perfil) || '').toLowerCase();
+  if (role === 'administrador' || role === 'admin' || role.includes('gerente')) {
     containerFiltro.style.display = 'flex';
 
     try {
@@ -410,7 +414,7 @@ async function init() {
           hora = new Date(p.data).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
         }
         return {
-          nome: p.aluno,
+          nome: p.aluno || p.aluno_nome || "Aluno",
           horaEntrada: hora,
           horaSaida: null,
           status: p.status === 'confirmado' ? 'treinando' : 'saiu'

@@ -60,7 +60,7 @@ Este projeto combina um frontend extremamente fluido e premium baseado em **Glas
 │   ├── planos/                 # Módulo de gerenciamento de planos
 │   ├── pagamentos/             # Histórico e controle financeiro
 │   ├── configuracoes/          # Customizações do tenant (Pix, WhatsApp, etc.)
-│   ├── Index.html              # Ponto de entrada do sistema (Login/Seleção)
+│   ├── index.html              # Ponto de entrada do sistema (Login/Seleção)
 │   └── banco_politicas.sql     # Script SQL contendo a estrutura de RLS e Triggers do banco
 └── README.md
 ```

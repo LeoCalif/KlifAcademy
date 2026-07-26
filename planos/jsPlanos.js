@@ -234,7 +234,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   btnFecharPlano.addEventListener("click", fecharModal);
-  btnCancelarPlanro = btnCancelarPlano.addEventListener("click", fecharModal);
+  btnCancelarPlano.addEventListener("click", fecharModal);
   modalOverlay.addEventListener("click", (e) => {
     if (e.target === modalOverlay) fecharModal();
   });
